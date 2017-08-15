@@ -1,0 +1,20 @@
+# Covers JetBrains IDEs: IntelliJ
+
+# IntelliJ configs:
+.idea/
+**.iml
+
+# Eclipse configs:
+.project
+.classpath
+bin/
+tmp/
+.settings/
+
+## Plugin-specific files:
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
