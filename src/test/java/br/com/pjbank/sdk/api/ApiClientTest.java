@@ -7,7 +7,30 @@ import org.apache.http.client.methods.HttpPut;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * @author Vinícius Silva
+ * @version 1.0
+ * @since 1.0
+ */
 public class ApiClientTest {
+    @Test(expected = IllegalArgumentException.class)
+    public void instanciarComEndPointVazio() {
+        String endPoint = "";
+        ApiClient apiClient = new ApiClient(endPoint);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void instanciarComEndPointSomenteComEspacos() {
+        String endPoint = " ";
+        ApiClient apiClient = new ApiClient(endPoint);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void instanciarComEndPointNulo() {
+        String endPoint = null;
+        ApiClient apiClient = new ApiClient(endPoint);
+    }
+
     @Test
     public void getHttpGetClientTest() {
         String endPoint = "teste";

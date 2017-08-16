@@ -2,6 +2,8 @@ package br.com.pjbank.sdk.api;
 
 /**
  * @author Vinícius Silva
+ * @version 1.0
+ * @since 1.0
  */
 public class ApiConfig {
     /**
@@ -16,6 +18,8 @@ public class ApiConfig {
 
     /**
      * Accept padrão com MIME-type que o client utilizará
+     * Pode ser alterado através do método setHeader("Accept", valor) em HttpClient, por exemplo,
+     * caso seja necessário receber outro tipo específico de retorno
      */
     public final static String accept = "application/json";
 

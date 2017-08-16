@@ -1,19 +1,28 @@
 package br.com.pjbank.sdk.api;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 
+/**
+ * @author Vinícius Silva
+ * @version 1.0
+ * @since 1.0
+ */
 public class ApiClient {
 
     /**
-     * Endpoint a ser requisitado na API
+     * URL completa a ser requisitado na API
      */
-    private String endPoint;
+    private String absolutePath;
 
     public ApiClient(String endPoint) {
-        this.endPoint = endPoint;
+        if (StringUtils.isBlank(endPoint))
+            throw new IllegalArgumentException("Endpoint não informado");
+
+        this.absolutePath = ApiConfig.apiBaseUrl.concat(endPoint);
     }
 
     /**
@@ -21,9 +30,7 @@ public class ApiClient {
      * @return HttpGet
      */
     public HttpGet getHttpGetClient() {
-        String url = ApiConfig.apiBaseUrl.concat(this.endPoint);
-
-        HttpGet client = new HttpGet(url);
+        HttpGet client = new HttpGet(this.absolutePath);
         client.addHeader("Accept", ApiConfig.accept);
         client.addHeader("Content-Type", ApiConfig.contentType);
 
@@ -35,9 +42,7 @@ public class ApiClient {
      * @return HttpPost
      */
     public HttpPost getHttpPostClient() {
-        String url = ApiConfig.apiBaseUrl.concat(this.endPoint);
-
-        HttpPost client = new HttpPost(url);
+        HttpPost client = new HttpPost(this.absolutePath);
         client.addHeader("Accept", ApiConfig.accept);
         client.addHeader("Content-Type", ApiConfig.contentType);
 
@@ -49,9 +54,7 @@ public class ApiClient {
      * @return HttpPut
      */
     public HttpPut getHttpPutClient() {
-        String url = ApiConfig.apiBaseUrl.concat(this.endPoint);
-
-        HttpPut client = new HttpPut(url);
+        HttpPut client = new HttpPut(this.absolutePath);
         client.addHeader("Accept", ApiConfig.accept);
         client.addHeader("Content-Type", ApiConfig.contentType);
 
@@ -63,9 +66,7 @@ public class ApiClient {
      * @return HttpDelete
      */
     public HttpDelete getHttpDeleteClient() {
-        String url = ApiConfig.apiBaseUrl.concat(this.endPoint);
-
-        HttpDelete client = new HttpDelete(url);
+        HttpDelete client = new HttpDelete(this.absolutePath);
         client.addHeader("Accept", ApiConfig.accept);
         client.addHeader("Content-Type", ApiConfig.contentType);
 
