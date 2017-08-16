@@ -3,6 +3,7 @@
 # IntelliJ configs:
 .idea/
 **.iml
+target/
 
 # Eclipse configs:
 .project
