@@ -1,10 +1,13 @@
 package br.com.pjbank.sdk.api;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.io.IOException;
 
 /**
  * @author Vinícius Silva
@@ -71,5 +74,25 @@ public class ApiClient {
         client.addHeader("Content-Type", ApiConfig.contentType);
 
         return client;
+    }
+
+    /**
+     * Retorna uma instância do HttpClient
+     * @return HttpClient
+     */
+    public HttpClient getHttpClient() {
+        return HttpClientBuilder.create().build();
+    }
+
+    /**
+     * Executa a requisição e retorna o Response
+     * @param  httpRequestClient Objeto HttpGet, HttpPost, HttpPut ou HttpDelete com as informações da requisição
+     * @return HttpResponse
+     * @throws IOException Em caso de problema ou conexão abortada
+     */
+    public HttpResponse doRequest(HttpRequestBase httpRequestClient) throws IOException {
+        HttpClient client = this.getHttpClient();
+
+        return client.execute(httpRequestClient);
     }
 }
