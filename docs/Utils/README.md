@@ -7,17 +7,17 @@
 Para obter a lista de todos os bancos suportados pelo PJBank basta instanciar a classe `br.com.pjbank.sdk.utils.Bancos` e utilizar o método get() como no exemplo abaixo:
 
 ```java
-package br.com.viniciusls.bancos;
+package br.com.viniciusls.app.services;
 
 import br.com.pjbank.sdk.models.Banco;
 import br.com.pjbank.sdk.utils.Bancos;
 
-public class Bancos {
+public class BancoService {
     /**
     * Retorna a lista de bancos suportados
     * @return List<Banco> bancos
     */
-    public List<Banco> get() {
+    public List<Banco> listarBancos() {
         Bancos bancos = new Bancos();
         
         return bancos.get();
