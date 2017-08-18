@@ -5,7 +5,7 @@ package br.com.pjbank.sdk.api;
  * @version 1.0
  * @since 1.0
  */
-public class ApiConfig {
+public class PJBankConfig {
     /**
      * URL base da API
      */
