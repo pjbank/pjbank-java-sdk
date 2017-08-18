@@ -1,6 +1,7 @@
 package br.com.pjbank.sdk.utils;
 
-import br.com.pjbank.sdk.api.ApiClient;
+import br.com.pjbank.sdk.api.PJBankClient;
+import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.Banco;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
@@ -18,8 +19,12 @@ public class Bancos {
      */
     private String endPoint = "bancos";
 
-    public List<Banco> get() throws IOException, JSONException {
-        ApiClient client = new ApiClient(endPoint);
+    /**
+     * Retorna a lista de bancos suportados
+     * @return List<Banco>
+     */
+    public List<Banco> get() throws IOException, JSONException, PJBankException {
+        PJBankClient client = new PJBankClient(endPoint);
         HttpGet httpGet = client.getHttpGetClient();
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());

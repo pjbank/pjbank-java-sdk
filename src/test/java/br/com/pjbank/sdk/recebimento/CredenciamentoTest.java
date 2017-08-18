@@ -1,4 +1,4 @@
-package br.com.pjbank.sdk.utils;
+package br.com.pjbank.sdk.recebimento;
 
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import org.json.JSONException;
@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class BancosTest {
+public class CredenciamentoTest {
     @Test
-    public void get() throws IOException, JSONException, PJBankException {
+    public void create() throws IOException, JSONException, PJBankException {
     }
 }

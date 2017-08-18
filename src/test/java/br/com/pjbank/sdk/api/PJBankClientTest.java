@@ -12,30 +12,30 @@ import org.junit.Test;
  * @version 1.0
  * @since 1.0
  */
-public class ApiClientTest {
+public class PJBankClientTest {
     @Test(expected = IllegalArgumentException.class)
     public void instanciarComEndPointVazio() {
         String endPoint = "";
-        ApiClient apiClient = new ApiClient(endPoint);
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void instanciarComEndPointSomenteComEspacos() {
         String endPoint = " ";
-        ApiClient apiClient = new ApiClient(endPoint);
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void instanciarComEndPointNulo() {
         String endPoint = null;
-        ApiClient apiClient = new ApiClient(endPoint);
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
     }
 
     @Test
     public void getHttpGetClientTest() {
         String endPoint = "teste";
-        ApiClient apiClient = new ApiClient(endPoint);
-        HttpGet client = apiClient.getHttpGetClient();
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
+        HttpGet client = pjBankClient.getHttpGetClient();
 
         String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
         String acceptHeaderEsperado = "application/json";
@@ -49,8 +49,8 @@ public class ApiClientTest {
     @Test
     public void getHttpPostClientTest() {
         String endPoint = "teste";
-        ApiClient apiClient = new ApiClient(endPoint);
-        HttpPost client = apiClient.getHttpPostClient();
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
+        HttpPost client = pjBankClient.getHttpPostClient();
 
         String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
         String acceptHeaderEsperado = "application/json";
@@ -64,8 +64,8 @@ public class ApiClientTest {
     @Test
     public void getHttpPutClientTest() {
         String endPoint = "teste";
-        ApiClient apiClient = new ApiClient(endPoint);
-        HttpPut client = apiClient.getHttpPutClient();
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
+        HttpPut client = pjBankClient.getHttpPutClient();
 
         String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
         String acceptHeaderEsperado = "application/json";
@@ -79,8 +79,8 @@ public class ApiClientTest {
     @Test
     public void getHttpDeleteClientTest() {
         String endPoint = "teste";
-        ApiClient apiClient = new ApiClient(endPoint);
-        HttpDelete client = apiClient.getHttpDeleteClient();
+        PJBankClient pjBankClient = new PJBankClient(endPoint);
+        HttpDelete client = pjBankClient.getHttpDeleteClient();
 
         String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
         String acceptHeaderEsperado = "application/json";
