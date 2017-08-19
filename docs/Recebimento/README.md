@@ -27,7 +27,7 @@ public class CredenciamentoService {
 }
 ```
 
-Assim, será retornado um objeto do tipo `br.com.pjbank.sdk.models.recebimento.Credencial` contendo a credencial, a chave, a agência virtual e a conta virtual para recebimento dos boletosManager gerados.
+Assim, será retornado um objeto do tipo `br.com.pjbank.sdk.models.recebimento.Credencial` contendo a credencial, a chave, a agência virtual e a conta virtual para recebimento dos boletos gerados.
 Como exceção, pode-se retornar as seguintes:
 
 - PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
