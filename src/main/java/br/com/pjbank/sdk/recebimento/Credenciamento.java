@@ -23,7 +23,7 @@ public class Credenciamento {
     private String endPoint = "recebimento";
 
     /**
-     * Gera uma credencial única por empresa para recebimento via boleto bancária
+     * Gera uma credencial única por empresa para recebimento via boleto bancário
      * @return Crendencial
      */
     public Credencial create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
