@@ -43,4 +43,5 @@ Como exceção, pode-se retornar as seguintes:
 - JSONException: Caso o retorno não esteja em formato adequado JSON.
 
 Referência: https://api.pjbank.com.br/bancos
+
 Documentação: https://docs.pjbank.com.br (Em construção)

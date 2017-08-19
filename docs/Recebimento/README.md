@@ -44,6 +44,7 @@ Como exceção, pode-se retornar as seguintes:
 - JSONException: Caso o retorno não esteja em formato adequado JSON.
 
 Referência: https://api.pjbank.com.br/recebimento
+
 Documentação: https://docs.pjbank.com.br (Em construção)
 
 ## Emissão
@@ -101,8 +102,9 @@ public class BoletoService {
             boleto.setPedidoNumero("9999");
             
             String credencial = "d3418668b85cea70aa28965eafaf927cd34d004c";
+            String chave = "46e79d6d5161336afa7b98f01236efacf5d0f24b";
             
-            BoletosManager boletosManager = new BoletosManager(credencial);
+            BoletosManager boletosManager = new BoletosManager(credencial, chave);
             
             return boletosManager.create(boleto);
         } catch (PJBankException e) {
@@ -125,4 +127,62 @@ Como exceção, pode-se retornar as seguintes:
 - JSONException: Caso o retorno não esteja em formato adequado JSON.
 
 Referência: https://api.pjbank.com.br/recebimento
+
+Documentação: https://docs.pjbank.com.br (Em construção)
+
+## Impressão/listagem
+
+### Listando boletos para impressão por códigos de pedidos relacionados
+
+Para listar todos os boletos bancários emitidos através dos códigos de pedidos basta instanciar a classe `br.com.pjbank.sdk.recebimento.BoletosManager` e utilizar o método `get` enviando, por parâmetro, uma lista (`java.util.Set`) contendo os códigos dos pedidos aos quais deseja listar os boletos relacionados como no exemplo abaixo:
+
+```java
+package br.com.viniciusls.app.services;
+
+import br.com.pjbank.sdk.models.recebimento.Boleto;
+import br.com.pjbank.sdk.recebimento.BoletosManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class BoletoService {
+    /**
+     * Realiza a emissão do boleto bancário para o cliente informado
+     * @return String: Link contendo os boletos relacionados aos códigos de pedidos enviados
+     */
+    public String listarBoletoPorCodigosDePedidos() {
+        try {
+            Set<String> codigosPedidos = new HashSet<>();
+            codigosPedidos.add("6666");
+            codigosPedidos.add("7777");
+            codigosPedidos.add("8888");
+            codigosPedidos.add("9999");        
+            
+            String credencial = "d3418668b85cea70aa28965eafaf927cd34d004c";
+            String chave = "46e79d6d5161336afa7b98f01236efacf5d0f24b";
+            
+            BoletosManager boletosManager = new BoletosManager(credencial, chave);
+            
+            return boletosManager.get(codigosPedidos);
+        } catch (PJBankException e) {
+            // catch block
+        } catch (IOException e) {
+            // catch block
+        } catch (JSONException e) {
+            // catch block
+        }
+    }
+
+}
+```
+
+Assim, será retornado uma URL contendo todos os boletos relacionados aos códigos enviados.
+Como exceção, pode-se retornar as seguintes:
+
+- PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
+- IOException: Caso ocorra falha na conexão entre a aplicação e a API;
+- JSONException: Caso o retorno não esteja em formato adequado JSON.
+
+Referência: https://api.pjbank.com.br/recebimento
+
 Documentação: https://docs.pjbank.com.br (Em construção)
