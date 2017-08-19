@@ -15,4 +15,8 @@ public class BoletosManagerTest {
     @Test
     public void create() throws IOException, JSONException, PJBankException {
     }
+
+    @Test
+    public void get() throws IOException, JSONException, PJBankException {
+    }
 }
