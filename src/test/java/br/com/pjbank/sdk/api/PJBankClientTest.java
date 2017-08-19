@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @author Vinícius Silva
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
  * @version 1.0
  * @since 1.0
  */

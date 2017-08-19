@@ -2,6 +2,11 @@ package br.com.pjbank.sdk.exceptions;
 
 import org.json.JSONObject;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class PJBankExceptionHandler {
     /**
      * Trata o erro retornado pela API em formato JSON (status, msg)
