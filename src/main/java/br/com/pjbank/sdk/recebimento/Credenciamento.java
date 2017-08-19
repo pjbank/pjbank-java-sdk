@@ -9,7 +9,13 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class Credenciamento {
     /**
      * EndPoint a ser requisitado na API
@@ -35,7 +41,7 @@ public class Credenciamento {
         params.put("telefone", String.valueOf(telefone));
         params.put("email", email);
 
-        httpPost.setEntity(new StringEntity(params.toString()));
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 

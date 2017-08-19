@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * @author Vinícius Silva
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
  * @version 1.0
  * @since 1.0
  */

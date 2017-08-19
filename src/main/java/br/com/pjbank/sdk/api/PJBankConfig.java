@@ -1,7 +1,7 @@
 package br.com.pjbank.sdk.api;
 
 /**
- * @author Vinícius Silva
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
  * @version 1.0
  * @since 1.0
  */

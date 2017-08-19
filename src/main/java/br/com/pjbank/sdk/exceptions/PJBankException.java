@@ -1,5 +1,10 @@
 package br.com.pjbank.sdk.exceptions;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class PJBankException extends Exception {
     /**
      * Código de erro da solicitação
