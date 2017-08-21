@@ -1,6 +1,7 @@
 package br.com.pjbank.sdk.recebimento;
 
 import br.com.pjbank.sdk.api.PJBankClient;
+import br.com.pjbank.sdk.enums.FormaRecebimento;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.recebimento.Credencial;
 import org.apache.http.client.methods.HttpPost;
@@ -27,7 +28,8 @@ public class Credenciamento {
      * @return Crendencial
      */
     public Credencial create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
-                             String cnpj, int ddd, int telefone, String email) throws IOException, PJBankException {
+                             String cnpj, int ddd, int telefone, String email, FormaRecebimento formaRecebimento)
+            throws IOException, PJBankException {
         PJBankClient client = new PJBankClient(endPoint);
         HttpPost httpPost = client.getHttpPostClient();
 
@@ -40,6 +42,7 @@ public class Credenciamento {
         params.put("ddd", String.valueOf(ddd));
         params.put("telefone", String.valueOf(telefone));
         params.put("email", email);
+        params.put("cartao", formaRecebimento == FormaRecebimento.CARTAO_CREDITO);
 
         httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 
