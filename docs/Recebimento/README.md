@@ -15,7 +15,7 @@ import br.com.pjbank.sdk.recebimento.Credenciamento;
 
 public class CredenciamentoService {
     /**
-    * Gera uma credencial única por empresa para recebimento via boleto bancária
+    * Gera uma credencial única por empresa para recebimento via boleto bancário
     * @return Credencial
     */
     public Credencial gerarCredencial(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
@@ -62,7 +62,7 @@ import br.com.pjbank.sdk.recebimento.Credenciamento;
 
 public class CredenciamentoService {
     /**
-    * Gera uma credencial única por empresa para recebimento via boleto bancária
+    * Gera uma credencial única por empresa para recebimento via cartão de crédito
     * @return Credencial
     */
     public Credencial gerarCredencial(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
