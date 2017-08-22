@@ -32,6 +32,8 @@ public class Boleto {
     private String linkGrupo;
     private String linhaDigitavel;
 
+    public Boleto() {
+    }
 
     public Boleto(Cliente cliente, double valor, double juros, double multa, double desconto, Date vencimento,
                   String logoUrl, String texto, String grupo, String pedidoNumero) {
