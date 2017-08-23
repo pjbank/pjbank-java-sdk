@@ -18,6 +18,6 @@ public class CartaoCreditoManagerTest {
     }
 
     @Test
-    public void create() throws IOException, JSONException, ParseException {
+    public void create() throws IOException, JSONException, ParseException, PJBankException {
     }
 }
