@@ -15,6 +15,8 @@ public class PJBankExceptionHandler {
      */
     public static PJBankException handleFromJSONResponse(String response){
         JSONObject responseObject = new JSONObject(response);
-        return new PJBankException(responseObject.getInt("status"), responseObject.getString("msg"));
+        return new PJBankException(responseObject.has("status") ? responseObject.getInt("status") : 500,
+                                    responseObject.has("msg") ? responseObject.getString("msg") :
+                                    responseObject.has("message") ? responseObject.getString("message") : "undefined");
     }
 }
