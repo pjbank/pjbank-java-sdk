@@ -21,7 +21,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
     /**
      * EndPoint a ser requisitado na API
      */
-    private String endPoint = "recebimento/{{credencial}}";
+    private String endPoint = "recebimentos/{{credencial}}";
 
     public CartaoCreditoManager(String credencial, String chave) {
         super(credencial, chave);
@@ -35,9 +35,9 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
      * @return String: token gerado para o cartão
      */
     public String tokenize(CartaoCredito cartaoCredito) throws IOException, PJBankException {
-        this.endPoint = this.endPoint.concat("/tokenizar");
+        this.endPoint = this.endPoint.concat("/tokens");
 
-        PJBankClient client = new PJBankClient(endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint);
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
 
@@ -55,7 +55,8 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+        JSONObject responseObject = new JSONObject(response);
 
-        return response;
+        return responseObject.getString("token_cartao");
     }
 }

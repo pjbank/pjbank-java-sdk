@@ -21,7 +21,7 @@ public class Credenciamento {
     /**
      * EndPoint a ser requisitado na API
      */
-    private String endPoint = "recebimento";
+    private String endPoint = "recebimentos";
 
     /**
      * Gera uma credencial única por empresa para recebimento via boleto bancário

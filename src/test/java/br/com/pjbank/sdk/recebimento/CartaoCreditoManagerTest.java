@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class CartaoCreditoManagerTest {
     @Test
-    public void get() throws IOException, JSONException {
+    public void tokenize() throws IOException, JSONException {
         try {
             CartaoCredito cartaoCredito = new CartaoCredito();
 

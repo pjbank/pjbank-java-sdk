@@ -26,7 +26,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
     /**
      * EndPoint a ser requisitado na API
      */
-    private String endPoint = "recebimento/{{credencial}}";
+    private String endPoint = "recebimentos/{{credencial}}";
 
     public BoletosManager(String credencial, String chave) {
         super(credencial, chave);
@@ -40,7 +40,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
      * @return Boleto
      */
     public Boleto create(Boleto boleto) throws IOException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacao");
+        this.endPoint = this.endPoint.concat("/transacoes");
 
         PJBankClient client = new PJBankClient(endPoint);
         HttpPost httpPost = client.getHttpPostClient();
@@ -86,7 +86,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
      * @return String: Link contendo os boletos relacionados aos códigos de pedidos enviados
      */
     public String get(Set<String> pedidos) throws IOException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacoes/imprimir");
+        this.endPoint = this.endPoint.concat("/transacoes/lotes");
 
         PJBankClient client = new PJBankClient(endPoint);
         HttpPost httpPost = client.getHttpPostClient();
