@@ -24,4 +24,8 @@ public class CartaoCreditoManagerTest {
     @Test
     public void createWithCreditCardData() throws IOException, JSONException, ParseException, PJBankException {
     }
+
+    @Test
+    public void delete() throws  IOException, JSONException, ParseException, PJBankException {
+    }
 }
