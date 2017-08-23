@@ -72,7 +72,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
      * @param parcelas: Quantidade de parcelas
      * @return TransacaoCartaoCredito: dados da transação
      */
-    public TransacaoCartaoCredito create(String token, String descricao, double valor, int parcelas)
+    public TransacaoCartaoCredito createWithToken(String token, String descricao, double valor, int parcelas)
             throws IOException, ParseException, PJBankException {
         this.endPoint = this.endPoint.concat("/transacoes");
 
@@ -83,6 +83,58 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         JSONObject params = new JSONObject();
 
         params.put("token_cartao", token);
+        params.put("descricao_pagamento", descricao);
+        params.put("valor", valor);
+        params.put("parcela", parcelas);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+        JSONObject responseObject = new JSONObject(response);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        TransacaoCartaoCredito transacaoCartaoCredito = new TransacaoCartaoCredito();
+        transacaoCartaoCredito.setId(responseObject.getString("tid"));
+
+        transacaoCartaoCredito.setPrevisaoCredito(dateFormat.parse(responseObject.getString("previsao_credito")));
+        transacaoCartaoCredito.setIdConciliacao(responseObject.getString("tid_conciliacao"));
+        transacaoCartaoCredito.setBandeira(responseObject.getString("bandeira"));
+        transacaoCartaoCredito.setAutorizacao(responseObject.getString("autorizacao"));
+        transacaoCartaoCredito.setCartaoTruncado(responseObject.getString("cartao_truncado"));
+        transacaoCartaoCredito.setStatusCartao(responseObject.getInt("statuscartao"));
+        transacaoCartaoCredito.setTarifa(responseObject.getDouble("tarifa"));
+        transacaoCartaoCredito.setTaxa(responseObject.getDouble("taxa"));
+
+        return transacaoCartaoCredito;
+    }
+
+    /**
+     * Realização a emissão de uma transação via cartão de crédito utilizando um token (gerado via tokenizar())
+     * @param cartaoCredito: Cartão de crédito a ser utilizado
+     * @param descricao: Descrição do pagamento
+     * @param valor: Valor do pagamento
+     * @param parcelas: Quantidade de parcelas
+     * @return TransacaoCartaoCredito: dados da transação
+     */
+    public TransacaoCartaoCredito createWithCreditCardData(CartaoCredito cartaoCredito, String descricao, double valor,
+                                                           int parcelas)
+            throws IOException, ParseException, PJBankException {
+        this.endPoint = this.endPoint.concat("/transacoes");
+
+        PJBankClient client = new PJBankClient(this.endPoint);
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave", this.getChave());
+
+        JSONObject params = new JSONObject();
+
+        params.put("nome_cartao", cartaoCredito.getNome());
+        params.put("numero_cartao", cartaoCredito.getNumero());
+        params.put("mes_vencimento", cartaoCredito.getMesVencimento());
+        params.put("ano_vencimento", cartaoCredito.getAnoVencimento());
+        params.put("cpf_cartao", cartaoCredito.getCpfCnpj());
+        params.put("email_cartao", cartaoCredito.getEmail());
+        params.put("celular_cartao", cartaoCredito.getCelular());
+        params.put("codigo_cvv", cartaoCredito.getCvv());
         params.put("descricao_pagamento", descricao);
         params.put("valor", valor);
         params.put("parcela", parcelas);
