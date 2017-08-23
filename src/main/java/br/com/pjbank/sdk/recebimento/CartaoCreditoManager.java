@@ -109,7 +109,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
     }
 
     /**
-     * Realização a emissão de uma transação via cartão de crédito utilizando um token (gerado via tokenizar())
+     * Realização a emissão de uma transação via cartão de crédito utilizando os dados do cartão de crédito
      * @param cartaoCredito: Cartão de crédito a ser utilizado
      * @param descricao: Descrição do pagamento
      * @param valor: Valor do pagamento
