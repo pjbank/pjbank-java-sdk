@@ -5,6 +5,8 @@ import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.recebimento.CartaoCredito;
 import br.com.pjbank.sdk.models.recebimento.TransacaoCartaoCredito;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -158,5 +160,24 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         transacaoCartaoCredito.setTaxa(responseObject.getDouble("taxa"));
 
         return transacaoCartaoCredito;
+    }
+
+    /**
+     * Realização o cancelamento de uma transação via cartão de crédito
+     * @param idTransacao: Código identificador da transação a ser cancelada
+     * @return boolean
+     */
+    public boolean delete(String idTransacao)
+            throws IOException, ParseException, PJBankException {
+        if (StringUtils.isBlank(idTransacao))
+            throw new IllegalArgumentException("ID da transação não informado");
+
+        this.endPoint = this.endPoint.concat("/transacoes/").concat(idTransacao);
+
+        PJBankClient client = new PJBankClient(this.endPoint);
+        HttpDelete httpDelete = client.getHttpDeleteClient();
+        httpDelete.addHeader("x-chave", this.getChave());
+
+        return client.doRequest(httpDelete).getStatusLine().getStatusCode() == 200;
     }
 }
