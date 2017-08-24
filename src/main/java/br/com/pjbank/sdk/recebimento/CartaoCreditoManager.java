@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -205,15 +206,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave", this.getChave());
 
-        if (filters != null && !filters.isEmpty()) {
-            URIBuilder uriBuilder = new URIBuilder(httpGet.getURI());
-
-            for (String key : filters.keySet()) {
-                uriBuilder.addParameter(key, filters.get(key));
-            }
-
-            httpGet.setURI(uriBuilder.build());
-        }
+        this.adicionarFiltros(httpGet, filters);
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
 
@@ -259,5 +252,18 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         }
 
         return pagamentosCartaoCredito;
+    }
+
+    private void adicionarFiltros(HttpRequestBase httpRequestClient, Map<String, String> filters)
+            throws URISyntaxException {
+        if (filters != null && !filters.isEmpty()) {
+            URIBuilder uriBuilder = new URIBuilder(httpRequestClient.getURI());
+
+            for (String key : filters.keySet()) {
+                uriBuilder.addParameter(key, filters.get(key));
+            }
+
+            httpRequestClient.setURI(uriBuilder.build());
+        }
     }
 }
