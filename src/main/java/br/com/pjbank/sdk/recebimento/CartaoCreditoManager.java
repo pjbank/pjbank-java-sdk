@@ -11,12 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -190,15 +194,26 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
 
     /**
      * Retorna a lista de transações emitidos via cartão de crédito
+     * @param filters: Lista de filtros à serem adicionados para listagem
      * @return List<PagamentoCartaoCredito>: lista de transações
      */
-    public List<PagamentoCartaoCredito> get()
-            throws IOException, ParseException, PJBankException {
+    public List<PagamentoCartaoCredito> get(Map<String, String> filters)
+            throws IOException, ParseException, URISyntaxException, PJBankException {
         this.endPoint = this.endPoint.concat("/transacoes");
 
         PJBankClient client = new PJBankClient(this.endPoint);
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave", this.getChave());
+
+        if (filters != null && !filters.isEmpty()) {
+            URIBuilder uriBuilder = new URIBuilder(httpGet.getURI());
+
+            for (String key : filters.keySet()) {
+                uriBuilder.addParameter(key, filters.get(key));
+            }
+
+            httpGet.setURI(uriBuilder.build());
+        }
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
 
