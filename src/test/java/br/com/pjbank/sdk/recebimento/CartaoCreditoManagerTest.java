@@ -1,6 +1,7 @@
 package br.com.pjbank.sdk.recebimento;
 
 import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.recebimento.CartaoCredito;
 import org.json.JSONException;
 import org.junit.Test;
 
@@ -27,5 +28,9 @@ public class CartaoCreditoManagerTest {
 
     @Test
     public void delete() throws  IOException, JSONException, ParseException, PJBankException {
+    }
+
+    @Test
+    public void get() throws  IOException, JSONException, ParseException {
     }
 }

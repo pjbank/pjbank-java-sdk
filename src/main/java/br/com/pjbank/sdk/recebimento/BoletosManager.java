@@ -81,7 +81,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
     }
 
     /**
-     * Realiza a emissão do boleto bancário para o cliente informado
+     * Retorna a lista de boletos emitidos por códigos de pedidos
      * @param pedidos: Lista de códigos de pedidos os quais deseja retornar os boletos
      * @return String: Link contendo os boletos relacionados aos códigos de pedidos enviados
      */
