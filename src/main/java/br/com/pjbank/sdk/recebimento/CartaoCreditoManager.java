@@ -3,13 +3,17 @@ package br.com.pjbank.sdk.recebimento;
 import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
 import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.Banco;
 import br.com.pjbank.sdk.models.recebimento.CartaoCredito;
+import br.com.pjbank.sdk.models.recebimento.PagamentoCartaoCredito;
 import br.com.pjbank.sdk.models.recebimento.TransacaoCartaoCredito;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -17,6 +21,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -179,5 +186,63 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         httpDelete.addHeader("x-chave", this.getChave());
 
         return client.doRequest(httpDelete).getStatusLine().getStatusCode() == 200;
+    }
+
+    /**
+     * Retorna a lista de transações emitidos via cartão de crédito
+     * @return List<PagamentoCartaoCredito>: lista de transações
+     */
+    public List<PagamentoCartaoCredito> get()
+            throws IOException, ParseException, PJBankException {
+        this.endPoint = this.endPoint.concat("/transacoes");
+
+        PJBankClient client = new PJBankClient(this.endPoint);
+        HttpGet httpGet = client.getHttpGetClient();
+        httpGet.addHeader("x-chave", this.getChave());
+
+        String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
+
+        JSONObject responseObject = new JSONObject(response);
+        JSONArray extratoObject = responseObject.getJSONArray("extrato");
+        int totalItensExtrato = extratoObject.length();
+
+        List<PagamentoCartaoCredito> pagamentosCartaoCredito = new ArrayList<>();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        for (int i = 0; i < totalItensExtrato; i++) {
+            JSONObject itemExtrato = extratoObject.getJSONObject(i);
+
+            PagamentoCartaoCredito pagamentoCartaoCredito = new PagamentoCartaoCredito();
+            pagamentoCartaoCredito.setId(itemExtrato.getString("tid"));
+            pagamentoCartaoCredito.setValor(itemExtrato.getDouble("valor"));
+            pagamentoCartaoCredito.setValorLiquido(itemExtrato.getDouble("valor_liquido"));
+            pagamentoCartaoCredito.setPedidoNumero(itemExtrato.getString("pedido_numero"));
+            pagamentoCartaoCredito.setAutorizada("1".equals(itemExtrato.getString("autorizada")));
+            pagamentoCartaoCredito.setCancelada("1".equals(itemExtrato.getString("cancelada")));
+            pagamentoCartaoCredito.setParcelas(itemExtrato.getInt("parcelas"));
+
+            String dataTransacao = itemExtrato.getString("data_transacao");
+            if (!StringUtils.isBlank(dataTransacao))
+                pagamentoCartaoCredito.setDataTransacao(dateFormat.parse(dataTransacao));
+
+            String dataCancelamento = itemExtrato.getString("data_cancelamento");
+            if (!StringUtils.isBlank(dataCancelamento))
+                pagamentoCartaoCredito.setDataCancelamento(dateFormat.parse(dataCancelamento));
+
+            pagamentoCartaoCredito.setMotivoCancelamento(itemExtrato.getString("motivo_cancelamento"));
+
+            String previsaoCredito = itemExtrato.getString("previsao_credito");
+            if (!StringUtils.isBlank(previsaoCredito))
+                pagamentoCartaoCredito.setPrevisaoCredito(dateFormat.parse(previsaoCredito));
+
+            pagamentoCartaoCredito.setConvenioProprio(itemExtrato.getString("convenio_proprio"));
+            pagamentoCartaoCredito.setIdConciliacao(itemExtrato.getString("tid_conciliacao"));
+            pagamentoCartaoCredito.setMsgErro(itemExtrato.getString("msg_erro"));
+            pagamentoCartaoCredito.setMsgErroEstorno(itemExtrato.getString("msg_erro_estorno"));
+
+            pagamentosCartaoCredito.add(pagamentoCartaoCredito);
+        }
+
+        return pagamentosCartaoCredito;
     }
 }
