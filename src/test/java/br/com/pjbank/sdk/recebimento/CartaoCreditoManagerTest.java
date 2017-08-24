@@ -6,7 +6,10 @@ import org.json.JSONException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -27,10 +30,14 @@ public class CartaoCreditoManagerTest {
     }
 
     @Test
-    public void delete() throws  IOException, JSONException, ParseException, PJBankException {
+    public void delete() throws IOException, JSONException, ParseException, PJBankException {
     }
 
     @Test
-    public void get() throws  IOException, JSONException, ParseException {
+    public void get() throws IOException, JSONException, ParseException, URISyntaxException, PJBankException {
+    }
+
+    @Test
+    public void getWithFilters() throws IOException, JSONException, ParseException, URISyntaxException, PJBankException {
     }
 }
