@@ -1,4 +1,4 @@
-package br.com.pjbank.sdk.models.recebimento;
+package br.com.pjbank.sdk.models.common;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -15,6 +15,9 @@ public class Cliente {
     private String cidade;
     private String estado;
     private int cep;
+    private int ddd;
+    private long telefone;
+    private String email;
 
     public Cliente() {
     }
@@ -29,6 +32,21 @@ public class Cliente {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
+    }
+
+    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, int cep, int ddd, long telefone, String email) {
+        this.nome = nome;
+        this.cpfCnpj = cpfCnpj;
+        this.endereco = endereco;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.ddd = ddd;
+        this.telefone = telefone;
+        this.email = email;
     }
 
     public String getNome() {
@@ -101,5 +119,29 @@ public class Cliente {
 
     public void setCep(int cep) {
         this.cep = cep;
+    }
+
+    public int getDdd() {
+        return ddd;
+    }
+
+    public void setDdd(int ddd) {
+        this.ddd = ddd;
+    }
+
+    public long getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(long telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

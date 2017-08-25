@@ -3,7 +3,7 @@ package br.com.pjbank.sdk.recebimento;
 import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.enums.FormaRecebimento;
 import br.com.pjbank.sdk.exceptions.PJBankException;
-import br.com.pjbank.sdk.models.recebimento.Credencial;
+import br.com.pjbank.sdk.models.recebimento.CredencialRecebimento;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -27,8 +27,8 @@ public class Credenciamento {
      * Gera uma credencial única por empresa para recebimento via boleto bancário
      * @return Crendencial
      */
-    public Credencial create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
-                             String cnpj, int ddd, int telefone, String email, FormaRecebimento formaRecebimento)
+    public CredencialRecebimento create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
+                                        String cnpj, int ddd, int telefone, String email, FormaRecebimento formaRecebimento)
             throws IOException, PJBankException {
         PJBankClient client = new PJBankClient(endPoint);
         HttpPost httpPost = client.getHttpPostClient();
@@ -50,7 +50,7 @@ public class Credenciamento {
 
         JSONObject responseObject = new JSONObject(response);
 
-        return new Credencial(responseObject.getString("credencial"), responseObject.getString("chave"),
+        return new CredencialRecebimento(responseObject.getString("credencial"), responseObject.getString("chave"),
                 responseObject.getString("conta_virtual"), responseObject.getString("agencia_virtual"));
     }
 }
