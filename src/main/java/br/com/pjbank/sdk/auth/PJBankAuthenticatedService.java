@@ -13,7 +13,7 @@ public class PJBankAuthenticatedService {
 
     public PJBankAuthenticatedService(String credencial, String chave) {
         if (StringUtils.isBlank(credencial))
-            throw new IllegalArgumentException("Credencial não informada");
+            throw new IllegalArgumentException("CredencialRecebimento não informada");
 
         if (StringUtils.isBlank(chave))
             throw new IllegalArgumentException("Chave não informada");

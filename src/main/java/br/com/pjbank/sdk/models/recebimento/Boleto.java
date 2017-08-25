@@ -1,5 +1,7 @@
 package br.com.pjbank.sdk.models.recebimento;
 
+import br.com.pjbank.sdk.models.common.Cliente;
+
 import java.util.Date;
 
 public class Boleto {

@@ -16,7 +16,7 @@ import br.com.pjbank.sdk.recebimento.Credenciamento;
 public class CredenciamentoService {
     /**
     * Gera uma credencial única por empresa para recebimento via boleto bancário
-    * @return Credencial
+    * @return CredencialRecebimento
     */
     public Credencial gerarCredencial(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
                                                                    String cnpj, int ddd, int telefone, String email) {
@@ -117,7 +117,7 @@ Para emitir um boleto bancário para recebimento pelo PJBank basta instanciar a 
 package br.com.viniciusls.app.services;
 
 import br.com.pjbank.sdk.models.recebimento.Boleto;
-import br.com.pjbank.sdk.models.recebimento.Cliente;
+import br.com.pjbank.sdk.models.common.Cliente;
 import br.com.pjbank.sdk.recebimento.BoletosManager;
 
 public class BoletoService {
