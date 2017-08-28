@@ -30,7 +30,7 @@ public class Credenciamento {
     public CredencialRecebimento create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
                                         String cnpj, int ddd, int telefone, String email, FormaRecebimento formaRecebimento)
             throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint);
         HttpPost httpPost = client.getHttpPostClient();
 
         JSONObject params = new JSONObject();

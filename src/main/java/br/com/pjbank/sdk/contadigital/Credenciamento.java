@@ -31,7 +31,7 @@ public class Credenciamento {
      */
     public Credencial create(Cliente cliente)
             throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint);
         HttpPost httpPost = client.getHttpPostClient();
 
         JSONObject params = new JSONObject();
