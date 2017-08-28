@@ -18,6 +18,7 @@ public class Cliente {
     private int ddd;
     private long telefone;
     private String email;
+    private boolean status;
 
     public Cliente() {
     }
@@ -143,5 +144,13 @@ public class Cliente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
