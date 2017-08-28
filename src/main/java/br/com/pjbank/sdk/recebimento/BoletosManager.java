@@ -40,9 +40,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
      * @return Boleto
      */
     public Boleto create(Boleto boleto) throws IOException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacoes");
-
-        PJBankClient client = new PJBankClient(endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -86,9 +84,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
      * @return String: Link contendo os boletos relacionados aos códigos de pedidos enviados
      */
     public String get(Set<String> pedidos) throws IOException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacoes/lotes");
-
-        PJBankClient client = new PJBankClient(endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes/lotes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
 

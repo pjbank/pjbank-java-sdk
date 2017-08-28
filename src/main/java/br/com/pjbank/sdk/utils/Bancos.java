@@ -29,7 +29,7 @@ public class Bancos {
      * @return List<Banco>
      */
     public List<Banco> get() throws IOException, JSONException, PJBankException {
-        PJBankClient client = new PJBankClient(endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint);
         HttpGet httpGet = client.getHttpGetClient();
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
