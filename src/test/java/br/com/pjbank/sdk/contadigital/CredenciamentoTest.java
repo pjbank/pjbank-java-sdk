@@ -1,5 +1,7 @@
 package br.com.pjbank.sdk.contadigital;
 
+import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.common.Credencial;
 import org.json.JSONException;
 import org.junit.Test;
 
@@ -12,6 +14,10 @@ import java.io.IOException;
  */
 public class CredenciamentoTest {
     @Test
-    public void create() throws IOException, JSONException {
+    public void create() throws IOException, JSONException, PJBankException {
+    }
+
+    @Test
+    public void get() throws IOException, JSONException, PJBankException {
     }
 }
