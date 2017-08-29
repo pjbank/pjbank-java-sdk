@@ -1,5 +1,10 @@
 package br.com.pjbank.sdk.models.common;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class Boleto {
     private String nossoNumero;
     private String linkBoleto;
