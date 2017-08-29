@@ -1,5 +1,10 @@
 package br.com.pjbank.sdk.models.recebimento;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class CartaoCredito {
     private String nome;
     private String cpfCnpj;

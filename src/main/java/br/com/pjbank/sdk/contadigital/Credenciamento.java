@@ -81,7 +81,7 @@ public class Credenciamento {
         cliente.setBairro(responseObject.getString("bairro"));
         cliente.setCidade(responseObject.getString("cidade"));
         cliente.setEstado(responseObject.getString("estado"));
-        cliente.setCep(responseObject.getInt("cep"));
+        cliente.setCep(responseObject.getString("cep"));
 
         String telefone = responseObject.getString("telefone");
         cliente.setDdd(Integer.parseInt(telefone.substring(0, 2)));

@@ -14,7 +14,7 @@ public class Cliente {
     private String bairro;
     private String cidade;
     private String estado;
-    private int cep;
+    private String cep;
     private int ddd;
     private long telefone;
     private String email;
@@ -23,7 +23,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, int cep) {
+    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.nome = nome;
         this.cpfCnpj = cpfCnpj;
         this.endereco = endereco;
@@ -35,7 +35,7 @@ public class Cliente {
         this.cep = cep;
     }
 
-    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, int cep, int ddd, long telefone, String email) {
+    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, String cep, int ddd, long telefone, String email) {
         this.nome = nome;
         this.cpfCnpj = cpfCnpj;
         this.endereco = endereco;
@@ -114,11 +114,11 @@ public class Cliente {
         this.estado = estado;
     }
 
-    public int getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(int cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 
