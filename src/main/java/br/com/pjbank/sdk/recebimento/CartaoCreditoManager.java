@@ -53,9 +53,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
      * @return String: token gerado para o cartão
      */
     public String tokenize(CartaoCredito cartaoCredito) throws IOException, PJBankException {
-        this.endPoint = this.endPoint.concat("/tokens");
-
-        PJBankClient client = new PJBankClient(this.endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/tokens"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
 
@@ -88,9 +86,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
      */
     public TransacaoCartaoCredito createWithToken(String token, String descricao, double valor, int parcelas)
             throws IOException, ParseException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacoes");
-
-        PJBankClient client = new PJBankClient(this.endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
 
@@ -133,9 +129,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
     public TransacaoCartaoCredito createWithCreditCardData(CartaoCredito cartaoCredito, String descricao, double valor,
                                                            int parcelas)
             throws IOException, ParseException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacoes");
-
-        PJBankClient client = new PJBankClient(this.endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
 
@@ -184,9 +178,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
         if (StringUtils.isBlank(idTransacao))
             throw new IllegalArgumentException("ID da transação não informado");
 
-        this.endPoint = this.endPoint.concat("/transacoes/").concat(idTransacao);
-
-        PJBankClient client = new PJBankClient(this.endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes/").concat(idTransacao));
         HttpDelete httpDelete = client.getHttpDeleteClient();
         httpDelete.addHeader("x-chave", this.getChave());
 
@@ -200,9 +192,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
      */
     public List<PagamentoCartaoCredito> get(Map<String, String> filters)
             throws IOException, ParseException, URISyntaxException, PJBankException {
-        this.endPoint = this.endPoint.concat("/transacoes");
-
-        PJBankClient client = new PJBankClient(this.endPoint);
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave", this.getChave());
 
