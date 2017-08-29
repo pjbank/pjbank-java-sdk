@@ -1,10 +1,11 @@
 package br.com.pjbank.sdk.models.recebimento;
 
+import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.common.Cliente;
 
 import java.util.Date;
 
-public class Boleto {
+public class BoletoRecebimento extends Boleto {
     /**
      * Dados para requisição
      */
@@ -26,19 +27,16 @@ public class Boleto {
     /**
      * Dados para resposta
      */
-    private String nossoNumero;
     private String id;
     private String banco;
     private String tokenFacilitador;
-    private String linkBoleto;
     private String linkGrupo;
-    private String linhaDigitavel;
 
-    public Boleto() {
+    public BoletoRecebimento() {
     }
 
-    public Boleto(Cliente cliente, double valor, double juros, double multa, double desconto, Date vencimento,
-                  String logoUrl, String texto, String grupo, String pedidoNumero) {
+    public BoletoRecebimento(Cliente cliente, double valor, double juros, double multa, double desconto, Date vencimento,
+                             String logoUrl, String texto, String grupo, String pedidoNumero) {
         this.cliente = cliente;
         this.valor = valor;
         this.juros = juros;
@@ -131,14 +129,6 @@ public class Boleto {
         this.pedidoNumero = pedidoNumero;
     }
 
-    public String getNossoNumero() {
-        return nossoNumero;
-    }
-
-    public void setNossoNumero(String nossoNumero) {
-        this.nossoNumero = nossoNumero;
-    }
-
     public String getId() {
         return id;
     }
@@ -163,27 +153,11 @@ public class Boleto {
         this.tokenFacilitador = tokenFacilitador;
     }
 
-    public String getLinkBoleto() {
-        return linkBoleto;
-    }
-
-    public void setLinkBoleto(String linkBoleto) {
-        this.linkBoleto = linkBoleto;
-    }
-
     public String getLinkGrupo() {
         return linkGrupo;
     }
 
     public void setLinkGrupo(String linkGrupo) {
         this.linkGrupo = linkGrupo;
-    }
-
-    public String getLinhaDigitavel() {
-        return linhaDigitavel;
-    }
-
-    public void setLinhaDigitavel(String linhaDigitavel) {
-        this.linhaDigitavel = linhaDigitavel;
     }
 }
