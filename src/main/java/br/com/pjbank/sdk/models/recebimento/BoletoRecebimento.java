@@ -5,6 +5,11 @@ import br.com.pjbank.sdk.models.common.Cliente;
 
 import java.util.Date;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class BoletoRecebimento extends Boleto {
     /**
      * Dados para requisição
