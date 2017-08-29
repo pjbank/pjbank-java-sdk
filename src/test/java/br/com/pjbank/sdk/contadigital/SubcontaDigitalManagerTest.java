@@ -18,6 +18,6 @@ public class SubcontaDigitalManagerTest {
     }
 
     @Test
-    public void get() throws IOException, JSONException, ParseException {
+    public void get() throws IOException, JSONException, ParseException, PJBankException {
     }
 }

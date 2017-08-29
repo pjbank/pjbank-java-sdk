@@ -2,22 +2,27 @@ package br.com.pjbank.sdk.models.recebimento;
 
 import java.util.Date;
 
+/**
+ * @author Vinícius Silva <vinicius.silva@superlogica.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class PagamentoCartaoCredito {
-    public String id;
-    public double valor;
-    public double valorLiquido;
-    public String pedidoNumero;
-    public boolean autorizada;
-    public boolean cancelada;
-    public int parcelas;
-    public Date dataTransacao;
-    public Date dataCancelamento;
-    public String motivoCancelamento;
-    public Date previsaoCredito;
-    public String convenioProprio;
-    public String idConciliacao;
-    public String msgErro;
-    public String msgErroEstorno;
+    private String id;
+    private double valor;
+    private double valorLiquido;
+    private String pedidoNumero;
+    private boolean autorizada;
+    private boolean cancelada;
+    private int parcelas;
+    private Date dataTransacao;
+    private Date dataCancelamento;
+    private String motivoCancelamento;
+    private Date previsaoCredito;
+    private String convenioProprio;
+    private String idConciliacao;
+    private String msgErro;
+    private String msgErroEstorno;
 
     public PagamentoCartaoCredito() {
     }
