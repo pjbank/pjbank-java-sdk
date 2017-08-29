@@ -23,7 +23,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      */
     private String endPoint = "contadigital";
 
-    public ContaDigitalManager(String credencial, String chave, String endPoint) {
+    public ContaDigitalManager(String credencial, String chave) {
         super(credencial, chave);
     }
 
@@ -44,7 +44,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
-        JSONObject responseObject = new JSONObject(response);
+        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
 
         return new Boleto(responseObject.getString("nosso_numero"),
                 responseObject.getString("link_boleto"),
