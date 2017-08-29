@@ -53,12 +53,12 @@ public class BoletosManager extends PJBankAuthenticatedService {
         params.put("nome_cliente", boletoRecebimento.getCliente().getNome());
         params.put("cpf_cliente", boletoRecebimento.getCliente().getCpfCnpj());
         params.put("endereco_cliente", boletoRecebimento.getCliente().getEndereco());
-        params.put("numero_cliente", boletoRecebimento.getCliente().getNumero());
-        params.put("complemento_cliente", boletoRecebimento.getCliente().getComplemento());
-        params.put("bairro_cliente", boletoRecebimento.getCliente().getBairro());
-        params.put("cidade_cliente", boletoRecebimento.getCliente().getCidade());
-        params.put("estado_cliente", boletoRecebimento.getCliente().getEstado());
-        params.put("cep_cliente", boletoRecebimento.getCliente().getCep());
+        params.put("numero_cliente", boletoRecebimento.getCliente().getEndereco().getNumero());
+        params.put("complemento_cliente", boletoRecebimento.getCliente().getEndereco().getComplemento());
+        params.put("bairro_cliente", boletoRecebimento.getCliente().getEndereco().getBairro());
+        params.put("cidade_cliente", boletoRecebimento.getCliente().getEndereco().getCidade());
+        params.put("estado_cliente", boletoRecebimento.getCliente().getEndereco().getEstado());
+        params.put("cep_cliente", boletoRecebimento.getCliente().getEndereco().getCep());
         params.put("logo_url", boletoRecebimento.getLogoUrl());
         params.put("texto", boletoRecebimento.getTexto());
         params.put("grupo", boletoRecebimento.getGrupo());

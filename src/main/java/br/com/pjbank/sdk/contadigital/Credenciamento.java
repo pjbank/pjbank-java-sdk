@@ -4,6 +4,7 @@ import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Cliente;
 import br.com.pjbank.sdk.models.common.Credencial;
+import br.com.pjbank.sdk.models.common.Endereco;
 import br.com.pjbank.sdk.models.recebimento.CredencialRecebimento;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -38,12 +39,12 @@ public class Credenciamento {
         params.put("nome_empresa", cliente.getNome());
         params.put("cnpj", cliente.getCpfCnpj());
         params.put("endereco", cliente.getEndereco());
-        params.put("numero", cliente.getNumero());
-        params.put("complemento", cliente.getComplemento());
-        params.put("bairro", cliente.getBairro());
-        params.put("cidade", cliente.getCidade());
-        params.put("estado", cliente.getEstado());
-        params.put("cep", cliente.getCep());
+        params.put("numero", cliente.getEndereco().getNumero());
+        params.put("complemento", cliente.getEndereco().getComplemento());
+        params.put("bairro", cliente.getEndereco().getBairro());
+        params.put("cidade", cliente.getEndereco().getCidade());
+        params.put("estado", cliente.getEndereco().getEstado());
+        params.put("cep", cliente.getEndereco().getCep());
         params.put("ddd", cliente.getDdd());
         params.put("telefone", cliente.getTelefone());
         params.put("email", cliente.getEmail());
@@ -75,13 +76,17 @@ public class Credenciamento {
         Cliente cliente = new Cliente();
         cliente.setNome(responseObject.getString("nome_empresa"));
         cliente.setCpfCnpj(responseObject.getString("cnpj"));
-        cliente.setEndereco(responseObject.getString("endereco"));
-        cliente.setNumero(responseObject.getInt("numero"));
-        cliente.setComplemento(responseObject.getString("complemento"));
-        cliente.setBairro(responseObject.getString("bairro"));
-        cliente.setCidade(responseObject.getString("cidade"));
-        cliente.setEstado(responseObject.getString("estado"));
-        cliente.setCep(responseObject.getString("cep"));
+
+        Endereco endereco = new Endereco();
+        endereco.setEndereco(responseObject.getString("endereco"));
+        endereco.setNumero(responseObject.getInt("numero"));
+        endereco.setComplemento(responseObject.getString("complemento"));
+        endereco.setBairro(responseObject.getString("bairro"));
+        endereco.setCidade(responseObject.getString("cidade"));
+        endereco.setEstado(responseObject.getString("estado"));
+        endereco.setCep(responseObject.getString("cep"));
+
+        cliente.setEndereco(endereco);
 
         String telefone = responseObject.getString("telefone");
         cliente.setDdd(Integer.parseInt(telefone.substring(0, 2)));

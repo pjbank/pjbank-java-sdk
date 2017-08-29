@@ -8,13 +8,7 @@ package br.com.pjbank.sdk.models.common;
 public class Cliente {
     private String nome;
     private String cpfCnpj;
-    private String endereco;
-    private int numero;
-    private String complemento;
-    private String bairro;
-    private String cidade;
-    private String estado;
-    private String cep;
+    private Endereco endereco;
     private int ddd;
     private long telefone;
     private String email;
@@ -23,28 +17,16 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
+    public Cliente(String nome, String cpfCnpj, Endereco endereco) {
         this.nome = nome;
         this.cpfCnpj = cpfCnpj;
         this.endereco = endereco;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.cep = cep;
     }
 
-    public Cliente(String nome, String cpfCnpj, String endereco, int numero, String complemento, String bairro, String cidade, String estado, String cep, int ddd, long telefone, String email) {
+    public Cliente(String nome, String cpfCnpj, Endereco endereco, int ddd, long telefone, String email) {
         this.nome = nome;
         this.cpfCnpj = cpfCnpj;
         this.endereco = endereco;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.cep = cep;
         this.ddd = ddd;
         this.telefone = telefone;
         this.email = email;
@@ -66,60 +48,12 @@ public class Cliente {
         this.cpfCnpj = cpfCnpj;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
     }
 
     public int getDdd() {
