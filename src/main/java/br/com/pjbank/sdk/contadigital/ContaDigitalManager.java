@@ -4,6 +4,8 @@ import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
+import br.com.pjbank.sdk.models.contadigital.StatusAdministrador;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -54,7 +56,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
     /**
      * Adiciona uma pessoa física como administradora da conta digital
      * @param email: E-mail da pessoa física à ser adicionada como administradora
-     * @return Boleto
+     * @return boolean
      */
     public boolean addAdmin(String email) throws IOException, PJBankException {
         PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores"));
@@ -67,5 +69,22 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 
         return client.doRequest(httpPost).getStatusLine().getStatusCode() == 200;
+    }
+
+    /**
+     * Retorna o status de um administrador da conta digital
+     * @param email: E-mail do administrador à ser consultado
+     * @return StatusAdministrador
+     */
+    public StatusAdministrador getStatusAdmin(String email) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores/").concat(email));
+        HttpGet httpGet = client.getHttpGetClient();
+        httpGet.addHeader("x-chave-conta", this.chave);
+
+        String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
+
+        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
+
+        return new StatusAdministrador(responseObject.getInt("statusVinculo"), responseObject.getString("msg"));
     }
 }
