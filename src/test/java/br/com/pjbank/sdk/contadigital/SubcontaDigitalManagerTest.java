@@ -20,4 +20,8 @@ public class SubcontaDigitalManagerTest {
     @Test
     public void get() throws IOException, JSONException, ParseException, PJBankException {
     }
+
+    @Test
+    public void addBalance() throws IOException, JSONException, PJBankException {
+    }
 }
