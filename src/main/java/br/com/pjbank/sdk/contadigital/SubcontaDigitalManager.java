@@ -121,4 +121,29 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
 
         return cartaoCorporativo;
     }
+
+    /**
+     * Realiza a emissão do boleto bancário para adicionar saldo à subconta digital
+     * @param tokenCartao: Token da subconta/cartão ao qual o saldo será adicionado
+     * @param valor: valor do saldo à ser adicionado
+     * @return Boleto
+     */
+    public Boleto addBalance(String tokenCartao, double valor) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/").concat(tokenCartao));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+
+        JSONObject params = new JSONObject();
+        params.put("valor", valor);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+
+        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
+
+        return new Boleto(responseObject.getString("nosso_numero"),
+                responseObject.getString("link_boleto"),
+                responseObject.getString("linha_digitavel"));
+    }
 }
