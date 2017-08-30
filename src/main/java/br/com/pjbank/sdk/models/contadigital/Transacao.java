@@ -1,4 +1,4 @@
-package br.com.pjbank.sdk.models.common;
+package br.com.pjbank.sdk.models.contadigital;
 
 import java.util.Date;
 
@@ -7,20 +7,18 @@ import java.util.Date;
  * @version 1.0
  * @since 1.0
  */
-public class Despesa {
+public class Transacao {
     private Date dataPagamento;
     private Date dataVencimento;
     private double valor;
-    private String codigoBarras;
 
-    public Despesa() {
+    public Transacao() {
     }
 
-    public Despesa(Date dataPagamento, Date dataVencimento, double valor, String codigoBarras) {
+    public Transacao(Date dataPagamento, Date dataVencimento, double valor) {
         this.dataPagamento = dataPagamento;
         this.dataVencimento = dataVencimento;
         this.valor = valor;
-        this.codigoBarras = codigoBarras;
     }
 
     public Date getDataPagamento() {
@@ -45,13 +43,5 @@ public class Despesa {
 
     public void setValor(double valor) {
         this.valor = valor;
-    }
-
-    public String getCodigoBarras() {
-        return codigoBarras;
-    }
-
-    public void setCodigoBarras(String codigoBarras) {
-        this.codigoBarras = codigoBarras;
     }
 }

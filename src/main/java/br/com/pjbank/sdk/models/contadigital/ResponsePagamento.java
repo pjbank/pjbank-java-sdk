@@ -1,4 +1,4 @@
-package br.com.pjbank.sdk.models.common;
+package br.com.pjbank.sdk.models.contadigital;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
