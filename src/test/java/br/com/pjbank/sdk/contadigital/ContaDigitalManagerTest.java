@@ -15,4 +15,8 @@ public class ContaDigitalManagerTest {
     @Test
     public void addBalance() throws IOException, JSONException, PJBankException {
     }
+
+    @Test
+    public void addAdmin() throws IOException, JSONException {
+    }
 }
