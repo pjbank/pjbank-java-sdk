@@ -5,6 +5,7 @@ import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.StatusAdministrador;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -86,5 +87,18 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         JSONObject responseObject = new JSONObject(response).getJSONObject("data");
 
         return new StatusAdministrador(responseObject.getInt("statusVinculo"), responseObject.getString("msg"));
+    }
+
+    /**
+     * Remove um administrador da conta digital
+     * @param email: E-mail do administrador à ser consultado
+     * @return boolean
+     */
+    public boolean delAdmin(String email) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores/").concat(email));
+        HttpDelete httpDelete = client.getHttpDeleteClient();
+        httpDelete.addHeader("x-chave-conta", this.chave);
+
+        return client.doRequest(httpDelete).getStatusLine().getStatusCode() == 200;
     }
 }
