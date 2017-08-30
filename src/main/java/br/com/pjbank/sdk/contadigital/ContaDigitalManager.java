@@ -21,7 +21,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
     /**
      * EndPoint a ser requisitado na API
      */
-    private String endPoint = "contadigital";
+    private String endPoint = "contadigital/{{credencial-conta}}";
 
     public ContaDigitalManager(String credencial, String chave) {
         super(credencial, chave);
@@ -33,7 +33,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return Boleto
      */
     public Boleto addBalance(double valor) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.concat("/").concat(this.credencial));
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
 
@@ -49,5 +49,23 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         return new Boleto(responseObject.getString("nosso_numero"),
                 responseObject.getString("link_boleto"),
                 responseObject.getString("linha_digitavel"));
+    }
+
+    /**
+     * Adiciona uma pessoa física como administradora da conta digital
+     * @param email: E-mail da pessoa física à ser adicionada como administradora
+     * @return Boleto
+     */
+    public boolean addAdmin(String email) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores"));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+
+        JSONObject params = new JSONObject();
+        params.put("email", email);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        return client.doRequest(httpPost).getStatusLine().getStatusCode() == 200;
     }
 }
