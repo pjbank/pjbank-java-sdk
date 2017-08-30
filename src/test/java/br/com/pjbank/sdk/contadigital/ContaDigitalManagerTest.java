@@ -17,6 +17,10 @@ public class ContaDigitalManagerTest {
     }
 
     @Test
-    public void addAdmin() throws IOException, JSONException {
+    public void addAdmin() throws IOException, JSONException, PJBankException {
+    }
+
+    @Test
+    public void getStatusAdmin() throws IOException, JSONException, PJBankException {
     }
 }
