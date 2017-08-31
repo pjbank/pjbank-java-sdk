@@ -43,6 +43,6 @@ public class ContaDigitalManagerTest {
     }
 
     @Test
-    public void delTransaction() throws IOException, JSONException {
+    public void delTransaction() throws IOException, JSONException, PJBankException {
     }
 }
