@@ -1,10 +1,16 @@
 package br.com.pjbank.sdk.contadigital;
 
+import br.com.pjbank.sdk.enums.TipoConta;
 import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.contadigital.TransacaoTransferencia;
 import org.json.JSONException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -29,6 +35,11 @@ public class ContaDigitalManagerTest {
     }
 
     @Test
-    public void expenseBarcodePayment() throws IOException, JSONException, PJBankException {
+    public void expenseBarcodePayment() throws IOException, JSONException, ParseException, PJBankException {
+    }
+
+    @Test
+    public void docTedTransfer() throws IOException, JSONException, ParseException, PJBankException {
+
     }
 }

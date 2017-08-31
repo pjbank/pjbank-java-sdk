@@ -1,7 +1,7 @@
 package br.com.pjbank.sdk.enums;
 
 public enum TipoConta {
-    CORRENTE("corrente"), POUPANCA("Poupança");
+    CORRENTE("corrente"), POUPANCA("poupanca");
 
     private String name;
 
