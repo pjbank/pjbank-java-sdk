@@ -41,4 +41,8 @@ public class ContaDigitalManagerTest {
     @Test
     public void docTedTransfer() throws IOException, JSONException, ParseException, PJBankException {
     }
+
+    @Test
+    public void delTransaction() throws IOException, JSONException {
+    }
 }
