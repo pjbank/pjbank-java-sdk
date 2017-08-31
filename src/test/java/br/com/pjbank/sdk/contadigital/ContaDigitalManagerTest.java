@@ -1,13 +1,13 @@
 package br.com.pjbank.sdk.contadigital;
 
+import br.com.pjbank.sdk.enums.TipoConta;
 import br.com.pjbank.sdk.exceptions.PJBankException;
-import br.com.pjbank.sdk.models.common.Despesa;
+import br.com.pjbank.sdk.models.contadigital.TransacaoTransferencia;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Test;
-import sun.security.krb5.internal.crypto.Des;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +35,10 @@ public class ContaDigitalManagerTest {
     }
 
     @Test
-    public void expenseBarcodePayment() throws IOException, JSONException, PJBankException {
+    public void expenseBarcodePayment() throws IOException, JSONException, ParseException, PJBankException {
+    }
+
+    @Test
+    public void docTedTransfer() throws IOException, JSONException, ParseException, PJBankException {
     }
 }
