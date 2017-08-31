@@ -247,4 +247,19 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         return client.doRequest(httpDelete).getStatusLine().getStatusCode() == 200;
     }
+
+    /**
+     * Realiza o cancelamento de transações em lote
+     * @param idsTransacoes: Lista de IDs das transações à serem canceladas
+     * @return Map<String, Boolean>: Resultado de cada operação por ID da transação
+     */
+    public Map<String, Boolean> delTransactions(Set<String> idsTransacoes) throws IOException, PJBankException {
+        Map<String, Boolean> responsesCancelamentosTransacoes = new HashMap<>();
+
+        for (String idTransacao : idsTransacoes) {
+            responsesCancelamentosTransacoes.put(idTransacao, this.delTransaction(idTransacao));
+        }
+
+        return responsesCancelamentosTransacoes;
+    }
 }
