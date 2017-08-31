@@ -234,4 +234,17 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         return responsesTransferencias;
     }
+
+    /**
+     * Realiza o cancelamento de uma transação
+     * @param idTransacao: ID da transação à ser cancelada
+     * @return boolean
+     */
+    public boolean delTransaction(String idTransacao) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes/").concat(idTransacao));
+        HttpDelete httpDelete = client.getHttpDeleteClient();
+        httpDelete.addHeader("x-chave-conta", this.chave);
+
+        return client.doRequest(httpDelete).getStatusLine().getStatusCode() == 200;
+    }
 }
