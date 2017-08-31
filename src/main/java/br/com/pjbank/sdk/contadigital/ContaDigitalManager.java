@@ -2,6 +2,9 @@ package br.com.pjbank.sdk.contadigital;
 
 import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
+import br.com.pjbank.sdk.enums.FormatoExtrato;
+import br.com.pjbank.sdk.enums.StatusTransacao;
+import br.com.pjbank.sdk.enums.TipoTransacao;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.*;
@@ -10,12 +13,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -261,5 +266,53 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         }
 
         return responsesCancelamentosTransacoes;
+    }
+
+    /**
+     * Retorna o extrato de transações da Conta Digital em formato JSON ou CNAB 240 [Desabilitado]
+     * @param dataInicio: Data de início do extrato desejado
+     * @param dataFim: Data de fim do extrato desejado
+     * @param formato: Formato de extrato desejado (JSON ou CNAB 240 [Desabilitado])
+     * @return List<TransacaoExtrato>
+     */
+    public List<TransacaoExtrato> get(Date dataInicio, Date dataFim, FormatoExtrato formato) throws IOException, ParseException, URISyntaxException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        HttpGet httpGet = client.getHttpGetClient();
+        httpGet.addHeader("x-chave-conta", this.chave);
+
+        if (!formato.equals(FormatoExtrato.JSON))
+            httpGet.removeHeaders("Accept");
+
+        URIBuilder uriBuilder = new URIBuilder(httpGet.getURI());
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        uriBuilder.addParameter("data_inicio", dateFormat.format(dataInicio));
+        uriBuilder.addParameter("data_fim", dateFormat.format(dataFim));
+        uriBuilder.addParameter("formato", formato.getName());
+
+        httpGet.setURI(uriBuilder.build());
+
+        String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
+
+        JSONArray responseArray = new JSONObject(response).getJSONArray("data");
+        List<TransacaoExtrato> transacoesExtrato = new ArrayList<>();
+
+        for(int i = 0; i < responseArray.length(); i++) {
+            JSONObject responseObject = (JSONObject) responseArray.get(i);
+
+            TransacaoExtrato transacaoExtrato = new TransacaoExtrato();
+            transacaoExtrato.setIdTransacao(responseObject.getString("id"));
+            transacaoExtrato.setIdentificador(responseObject.getString("identificador"));
+            transacaoExtrato.setFavorecido(responseObject.getString("favorecido"));
+            transacaoExtrato.setCnpjFavorecido(responseObject.getString("cnpj_favorecido"));
+            transacaoExtrato.setData(dateFormat.parse(responseObject.getString("data")));
+            transacaoExtrato.setValor(responseObject.getDouble("valor"));
+            transacaoExtrato.setHistorico(responseObject.getString("historico"));
+            transacaoExtrato.setTipo(TipoTransacao.fromString(responseObject.getString("tipo_transacao")));
+
+            transacoesExtrato.add(transacaoExtrato);
+        }
+
+        return transacoesExtrato;
     }
 }
