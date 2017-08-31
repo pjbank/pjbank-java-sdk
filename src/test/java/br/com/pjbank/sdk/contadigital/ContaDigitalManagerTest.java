@@ -1,5 +1,6 @@
 package br.com.pjbank.sdk.contadigital;
 
+import br.com.pjbank.sdk.enums.FormatoExtrato;
 import br.com.pjbank.sdk.enums.TipoConta;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.contadigital.TransacaoTransferencia;
@@ -7,6 +8,7 @@ import org.json.JSONException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -46,5 +48,9 @@ public class ContaDigitalManagerTest {
 
     @Test
     public void delTransactions() throws IOException, JSONException, PJBankException {
+    }
+
+    @Test
+    public void get() throws IOException, JSONException, ParseException, URISyntaxException {
     }
 }
