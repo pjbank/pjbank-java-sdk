@@ -101,7 +101,7 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
             cartaoCorporativo.setDataBloqueio(dateFormat.parse(dataBloqueio));
 
         Endereco endereco = new Endereco();
-        endereco.setEndereco(responseObject.getString("endereco"));
+        endereco.setLogradouro(responseObject.getString("endereco"));
         endereco.setNumero(responseObject.getInt("numero"));
         endereco.setComplemento(responseObject.getString("complemento"));
         endereco.setBairro(responseObject.getString("bairro"));

@@ -6,7 +6,7 @@ package br.com.pjbank.sdk.models.common;
  * @since 1.0
  */
 public class Endereco {
-    private String endereco;
+    private String logradouro;
     private int numero;
     private String complemento;
     private String bairro;
@@ -17,8 +17,8 @@ public class Endereco {
     public Endereco() {
     }
 
-    public Endereco(String endereco, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
-        this.endereco = endereco;
+    public Endereco(String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
+        this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
@@ -27,12 +27,12 @@ public class Endereco {
         this.cep = cep;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public int getNumero() {

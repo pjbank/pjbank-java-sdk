@@ -5,7 +5,6 @@ import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Cliente;
 import br.com.pjbank.sdk.models.common.Credencial;
 import br.com.pjbank.sdk.models.common.Endereco;
-import br.com.pjbank.sdk.models.recebimento.CredencialRecebimento;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -78,7 +77,7 @@ public class Credenciamento {
         cliente.setCpfCnpj(responseObject.getString("cnpj"));
 
         Endereco endereco = new Endereco();
-        endereco.setEndereco(responseObject.getString("endereco"));
+        endereco.setLogradouro(responseObject.getString("endereco"));
         endereco.setNumero(responseObject.getInt("numero"));
         endereco.setComplemento(responseObject.getString("complemento"));
         endereco.setBairro(responseObject.getString("bairro"));
