@@ -123,7 +123,7 @@ public class CartaoCreditoManagerTest {
 
     @Test
     public void get() throws IOException, JSONException, ParseException, URISyntaxException, PJBankException {
-        
+
     }
 
     @Test
