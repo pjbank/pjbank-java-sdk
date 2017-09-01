@@ -321,46 +321,48 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @param transacoesTransferenciasContaSubconta: Transferências à serem realizadas
      * @return List<ResponseTransferencia>: Lista com retorno de cada pagamento do lote
      */
-    // TODO: Refactoring em model de transferência e seu response para se adaptar melhor a este código
-    public List<ResponsePagamento> accountToSubaccountTransfer(List<TransacaoCodigoBarras> transacoesTransferenciasContaSubconta) throws IOException, ParseException, PJBankException {
+    public List<ResponseTransferencia> accountToSubaccountTransfer(List<TransacaoTransferenciaInterna> transacoesTransferenciasContaSubconta) throws IOException, ParseException, PJBankException {
         PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        JSONArray despesasArray = new JSONArray();
+        JSONArray transferenciasArray = new JSONArray();
 
-        for (TransacaoCodigoBarras transacaoCodigoBarras : transacoesTransferenciasContaSubconta) {
-            JSONObject despesaObject = new JSONObject();
-            despesaObject.put("data_vencimento", dateFormat.format(transacaoCodigoBarras.getDataVencimento()));
-            despesaObject.put("valor", transacaoCodigoBarras.getValor());
-            despesaObject.put("conta_destino", transacaoCodigoBarras.getCodigoBarras());
+        for (TransacaoTransferenciaInterna transacaoTransferenciaInterna : transacoesTransferenciasContaSubconta) {
+            JSONObject transferenciaObject = new JSONObject();
+            transferenciaObject.put("data_vencimento", dateFormat.format(transacaoTransferenciaInterna.getDataVencimento()));
+            transferenciaObject.put("valor", transacaoTransferenciaInterna.getValor());
+            transferenciaObject.put("conta_destino", transacaoTransferenciaInterna.getContaDestino());
 
-            despesasArray.put(despesaObject);
+            if (StringUtils.isNotBlank(transacaoTransferenciaInterna.getContaOrigem()))
+                transferenciaObject.put("conta_origem", transacaoTransferenciaInterna.getContaOrigem());
+
+            transferenciasArray.put(transferenciaObject);
         }
 
         JSONObject params = new JSONObject();
-        params.put("lote", despesasArray);
+        params.put("lote", transferenciasArray);
 
         httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
         JSONArray responseArray = new JSONObject(response).getJSONArray("data");
-        List<ResponsePagamento> responsesPagamentos = new ArrayList<>();
+        List<ResponseTransferencia> responsesTransferencias = new ArrayList<>();
 
         for(int i = 0; i < responseArray.length(); i++) {
             JSONObject object = (JSONObject) responseArray.get(i);
 
-            ResponsePagamento responsePagamento = new ResponsePagamento();
-            responsePagamento.setIdOperacao(object.getString("id_operacao"));
-            responsePagamento.setStatus(object.getInt("status"));
-            responsePagamento.setMessage(object.getString("msg"));
+            ResponseTransferencia responseTransferencia = new ResponseTransferencia();
+            responseTransferencia.setIdOperacao(object.getString("id_operacao"));
+            responseTransferencia.setStatus(object.getInt("status"));
+            responseTransferencia.setMessage(object.getString("msg"));
 
-            responsesPagamentos.add(responsePagamento);
+            responsesTransferencias.add(responseTransferencia);
         }
 
-        return responsesPagamentos;
+        return responsesTransferencias;
     }
 
 }
