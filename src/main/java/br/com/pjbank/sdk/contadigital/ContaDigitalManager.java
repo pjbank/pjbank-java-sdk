@@ -315,4 +315,54 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         return transacoesExtrato;
     }
+
+    /**
+     * Realiza uma transferência da Conta Digital para um Subconta Digital
+     * @param transacoesTransferenciasContaSubconta: Transferências à serem realizadas
+     * @return List<ResponseTransferencia>: Lista com retorno de cada pagamento do lote
+     */
+    public List<ResponseTransferencia> accountToSubaccountTransfer(List<TransacaoTransferenciaInterna> transacoesTransferenciasContaSubconta) throws IOException, ParseException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        JSONArray transferenciasArray = new JSONArray();
+
+        for (TransacaoTransferenciaInterna transacaoTransferenciaInterna : transacoesTransferenciasContaSubconta) {
+            JSONObject transferenciaObject = new JSONObject();
+            transferenciaObject.put("data_vencimento", dateFormat.format(transacaoTransferenciaInterna.getDataVencimento()));
+            transferenciaObject.put("valor", transacaoTransferenciaInterna.getValor());
+            transferenciaObject.put("conta_destino", transacaoTransferenciaInterna.getContaDestino());
+
+            if (StringUtils.isNotBlank(transacaoTransferenciaInterna.getContaOrigem()))
+                transferenciaObject.put("conta_origem", transacaoTransferenciaInterna.getContaOrigem());
+
+            transferenciasArray.put(transferenciaObject);
+        }
+
+        JSONObject params = new JSONObject();
+        params.put("lote", transferenciasArray);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+
+        JSONArray responseArray = new JSONObject(response).getJSONArray("data");
+        List<ResponseTransferencia> responsesTransferencias = new ArrayList<>();
+
+        for(int i = 0; i < responseArray.length(); i++) {
+            JSONObject object = (JSONObject) responseArray.get(i);
+
+            ResponseTransferencia responseTransferencia = new ResponseTransferencia();
+            responseTransferencia.setIdOperacao(object.getString("id_operacao"));
+            responseTransferencia.setStatus(object.getInt("status"));
+            responseTransferencia.setMessage(object.getString("msg"));
+
+            responsesTransferencias.add(responseTransferencia);
+        }
+
+        return responsesTransferencias;
+    }
+
 }

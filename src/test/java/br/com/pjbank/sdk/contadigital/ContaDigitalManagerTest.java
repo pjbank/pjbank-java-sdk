@@ -4,6 +4,7 @@ import br.com.pjbank.sdk.enums.FormatoExtrato;
 import br.com.pjbank.sdk.enums.TipoConta;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.contadigital.TransacaoTransferencia;
+import br.com.pjbank.sdk.models.contadigital.TransacaoTransferenciaInterna;
 import org.json.JSONException;
 import org.junit.Test;
 
@@ -52,5 +53,9 @@ public class ContaDigitalManagerTest {
 
     @Test
     public void get() throws IOException, JSONException, ParseException, URISyntaxException {
+    }
+
+    @Test
+    public void accountToSubaccountTransfer() throws IOException, JSONException, ParseException, PJBankException {
     }
 }
