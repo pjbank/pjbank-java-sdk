@@ -52,7 +52,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
         params.put("desconto", boletoRecebimento.getDesconto());
         params.put("nome_cliente", boletoRecebimento.getCliente().getNome());
         params.put("cpf_cliente", boletoRecebimento.getCliente().getCpfCnpj());
-        params.put("endereco_cliente", boletoRecebimento.getCliente().getEndereco());
+        params.put("endereco_cliente", boletoRecebimento.getCliente().getEndereco().getLogradouro());
         params.put("numero_cliente", boletoRecebimento.getCliente().getEndereco().getNumero());
         params.put("complemento_cliente", boletoRecebimento.getCliente().getEndereco().getComplemento());
         params.put("bairro_cliente", boletoRecebimento.getCliente().getEndereco().getBairro());
@@ -87,7 +87,10 @@ public class BoletosManager extends PJBankAuthenticatedService {
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
 
-        JSONArray params = new JSONArray(pedidos);
+        JSONArray pedidosArray = new JSONArray(pedidos);
+
+        JSONObject params = new JSONObject();
+        params.put("pedido_numero", pedidosArray);
 
         httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 
