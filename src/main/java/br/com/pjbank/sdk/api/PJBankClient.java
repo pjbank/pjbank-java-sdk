@@ -98,7 +98,7 @@ public class PJBankClient {
         HttpClient client = this.getHttpClient();
 
         HttpResponse response = client.execute(httpRequestClient);
-        JSONObject object = new JSONObject(EntityUtils.toString(response.getEntity()));
+
         if (response.getStatusLine().getStatusCode() >= 400)
             throw PJBankExceptionHandler.handleFromJSONResponse(EntityUtils.toString(response.getEntity()));
 
