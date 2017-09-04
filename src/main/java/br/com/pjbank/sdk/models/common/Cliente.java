@@ -80,11 +80,15 @@ public class Cliente {
         this.email = email;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public boolean isAtivo() {
+        return status;
     }
 }

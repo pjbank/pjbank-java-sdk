@@ -36,8 +36,8 @@ public class Credenciamento {
 
         JSONObject params = new JSONObject();
         params.put("nome_empresa", cliente.getNome());
-        params.put("cnpj", cliente.getCpfCnpj());
-        params.put("endereco", cliente.getEndereco());
+        params.put("cnpj", cliente.getCpfCnpj().replaceAll("[^0-9]", ""));
+        params.put("endereco", cliente.getEndereco().getLogradouro());
         params.put("numero", cliente.getEndereco().getNumero());
         params.put("complemento", cliente.getEndereco().getComplemento());
         params.put("bairro", cliente.getEndereco().getBairro());
@@ -52,7 +52,7 @@ public class Credenciamento {
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
-        JSONObject responseObject = new JSONObject(response);
+        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
 
         return new Credencial(responseObject.getString("credencial"), responseObject.getString("chave"));
     }
