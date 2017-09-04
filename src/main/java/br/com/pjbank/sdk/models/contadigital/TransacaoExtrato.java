@@ -1,6 +1,5 @@
 package br.com.pjbank.sdk.models.contadigital;
 
-import br.com.pjbank.sdk.enums.StatusTransacao;
 import br.com.pjbank.sdk.enums.TipoTransacao;
 
 import java.util.Date;
