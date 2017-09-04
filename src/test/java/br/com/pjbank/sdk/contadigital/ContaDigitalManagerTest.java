@@ -211,5 +211,20 @@ public class ContaDigitalManagerTest {
 
     @Test
     public void accountToSubaccountTransfer() throws IOException, JSONException, ParseException, PJBankException {
+        List<TransacaoTransferenciaInterna> transacoesTransferenciasContaSubconta = new ArrayList<>();
+
+        TransacaoTransferenciaInterna transacaoTransferenciaInterna = new TransacaoTransferenciaInterna();
+        transacaoTransferenciaInterna.setValor(1.50);
+        transacaoTransferenciaInterna.setDataVencimento(new Date());
+        transacaoTransferenciaInterna.setContaDestino("b2240b16b373446935a2a7ab437577a823f22eaa");
+
+        transacoesTransferenciasContaSubconta.add(transacaoTransferenciaInterna);
+
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+
+        ResponseTransferencia responseTransferencia = contaDigitalManager.accountToSubaccountTransfer(transacoesTransferenciasContaSubconta).get(0);
+        Assert.assertThat(responseTransferencia.getIdOperacao(), not(is(emptyOrNullString())));
+        Assert.assertThat(String.valueOf(responseTransferencia.getStatus()), not(is(emptyOrNullString())));
+        Assert.assertThat(responseTransferencia.getMessage(), not(is(emptyOrNullString())));
     }
 }
