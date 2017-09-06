@@ -47,7 +47,7 @@ Como exceção, pode-se retornar as seguintes:
 
 Referência: https://api.pjbank.com.br/recebimento
 
-Documentação: https://docs.pjbank.com.br (Em construção)
+Documentação: https://docs.pjbank.com.br
 
 ### Credenciamento de uma conta para receber com cartão de crédito
 
@@ -94,7 +94,7 @@ Como exceção, pode-se retornar as seguintes:
 
 Referência: https://api.pjbank.com.br/recebimento
 
-Documentação: https://docs.pjbank.com.br (Em construção)
+Documentação: https://docs.pjbank.com.br
 
 ## Emissão
 
@@ -177,7 +177,7 @@ Como exceção, pode-se retornar as seguintes:
 
 Referência: https://api.pjbank.com.br/recebimento
 
-Documentação: https://docs.pjbank.com.br (Em construção)
+Documentação: https://docs.pjbank.com.br
 
 ## Impressão/listagem
 
@@ -234,4 +234,4 @@ Como exceção, pode-se retornar as seguintes:
 
 Referência: https://api.pjbank.com.br/recebimento
 
-Documentação: https://docs.pjbank.com.br (Em construção)
+Documentação: https://docs.pjbank.com.br
