@@ -38,6 +38,8 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
     public ContaDigitalManager(String credencial, String chave) {
         super(credencial, chave);
+
+        this.endPoint = this.endPoint.replace("{{credencial-conta}}", this.credencial);
     }
 
     /**
@@ -46,7 +48,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return Boleto
      */
     public Boleto addBalance(double valor) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial));
+        PJBankClient client = new PJBankClient(this.endPoint);
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
 
@@ -70,7 +72,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return boolean
      */
     public boolean addAdmin(String email) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/administradores"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
 
@@ -88,7 +90,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return String: Descrição do status
      */
     public String getStatusAdmin(String email) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores/").concat(email));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/administradores/").concat(email));
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave-conta", this.chave);
 
@@ -105,7 +107,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return boolean
      */
     public boolean delAdmin(String email) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores/").concat(email));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/administradores/").concat(email));
         HttpDelete httpDelete = client.getHttpDeleteClient();
         httpDelete.addHeader("x-chave-conta", this.chave);
 
@@ -118,7 +120,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return ResponsePagamento: Retorno do pagamento da despesa
      */
     public ResponsePagamento expenseBarcodePayment(TransacaoCodigoBarras transacaoCodigoBarras) throws IOException, ParseException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -163,7 +165,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         if (transacoesCodigoBarras.size() == 1)
             return new ArrayList<>(Arrays.asList(this.expenseBarcodePayment(transacoesCodigoBarras.get(0))));
 
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -214,7 +216,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return ResponseTransferencia: Retorno da transferência
      */
     public ResponseTransferencia docTedTransfer(TransacaoTransferencia transferencia) throws IOException, ParseException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -269,7 +271,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         if (transferencias.size() == 1)
             return new ArrayList<>(Arrays.asList(this.docTedTransfer(transferencias.get(0))));
 
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -360,7 +362,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return List<TransacaoExtrato>
      */
     public List<TransacaoExtrato> get(Date dataInicio, Date dataFim, FormatoExtrato formato) throws IOException, ParseException, URISyntaxException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave-conta", this.chave);
 
@@ -406,7 +408,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
      * @return ResponseTransferencia: Retorno da transferência
      */
     public ResponseTransferencia accountToSubaccountTransfer(TransacaoTransferenciaInterna transacaoTransferenciasContaSubconta) throws IOException, ParseException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -449,7 +451,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         if (transacoesTransferenciasContaSubconta.size() == 1)
             return new ArrayList<>(Arrays.asList(this.accountToSubaccountTransfer(transacoesTransferenciasContaSubconta.get(0))));
 
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");

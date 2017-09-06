@@ -34,6 +34,8 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
 
     public SubcontaDigitalManager(String credencial, String chave) {
         super(credencial, chave);
+
+        this.endPoint = this.endPoint.replace("{{credencial-conta}}", this.credencial);
     }
 
     /**
@@ -42,7 +44,7 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
      * @return Subconta
      */
     public Subconta create(Subconta subconta) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial));
+        PJBankClient client = new PJBankClient(this.endPoint);
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -79,7 +81,7 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
      * @return CartaoCorporativo
      */
     public CartaoCorporativo get(String tokenCartao) throws IOException, ParseException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/").concat(tokenCartao));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/").concat(tokenCartao));
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave-conta", this.chave);
 
@@ -129,7 +131,7 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
      * @return Boleto
      */
     public Boleto addBalance(String tokenCartao, double valor) throws IOException, PJBankException {
-        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/").concat(tokenCartao));
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/").concat(tokenCartao));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
 
