@@ -3,12 +3,10 @@ package br.com.pjbank.sdk.contadigital;
 import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
 import br.com.pjbank.sdk.enums.FormatoExtrato;
-import br.com.pjbank.sdk.enums.StatusTransacao;
 import br.com.pjbank.sdk.enums.TipoTransacao;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.*;
-import br.com.pjbank.sdk.utils.JSONUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -59,9 +57,9 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
-        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
+        JSONObject responseObject = new JSONObject(response);
 
-        return new Boleto(responseObject.getString("nosso_numero"),
+        return new Boleto(responseObject.getString("id_unico"),
                 responseObject.getString("link_boleto"),
                 responseObject.getString("linha_digitavel"));
     }
@@ -87,18 +85,18 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
     /**
      * Retorna o status de um administrador da conta digital
      * @param email: E-mail do administrador à ser consultado
-     * @return StatusAdministrador
+     * @return String: Descrição do status
      */
-    public StatusAdministrador getStatusAdmin(String email) throws IOException, PJBankException {
+    public String getStatusAdmin(String email) throws IOException, PJBankException {
         PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/administradores/").concat(email));
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave-conta", this.chave);
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
 
-        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
+        JSONObject responseObject = new JSONObject(response);
 
-        return new StatusAdministrador(responseObject.getInt("statusVinculo"), responseObject.getString("msg"));
+        return responseObject.getString("msg");
     }
 
     /**
@@ -116,10 +114,55 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
     /**
      * Realiza o pagamento de uma despesa por meio do Codígo de Barras via Conta Digital
+     * @param transacaoCodigoBarras: Despesa à ser paga
+     * @return ResponsePagamento: Retorno do pagamento da despesa
+     */
+    public ResponsePagamento expenseBarcodePayment(TransacaoCodigoBarras transacaoCodigoBarras) throws IOException, ParseException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        JSONArray despesasArray = new JSONArray();
+
+        JSONObject despesaObject = new JSONObject();
+        despesaObject.put("data_pagamento", dateFormat.format(transacaoCodigoBarras.getDataPagamento()));
+        despesaObject.put("data_vencimento", dateFormat.format(transacaoCodigoBarras.getDataVencimento()));
+        despesaObject.put("valor", transacaoCodigoBarras.getValor());
+        despesaObject.put("codigo_barras", transacaoCodigoBarras.getCodigoBarras());
+
+        despesasArray.put(despesaObject);
+
+        JSONObject params = new JSONObject();
+        params.put("lote", despesasArray);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+
+        JSONObject responseObject = new JSONObject(response);
+
+        ResponsePagamento responsePagamento = new ResponsePagamento();
+        responsePagamento.setIdOperacao(responseObject.getString("id_operacao"));
+        responsePagamento.setStatus(responseObject.getInt("status"));
+        responsePagamento.setMessage(responseObject.getString("msg"));
+
+        String dataPagamento = responseObject.getString("data_pagamento");
+        if (!StringUtils.isBlank(dataPagamento))
+            responsePagamento.setDataPagamento(dateFormat.parse(dataPagamento));
+
+        return responsePagamento;
+    }
+
+    /**
+     * Realiza o pagamento de várias despesas por meio do Codígo de Barras via Conta Digital
      * @param transacoesCodigoBarras: Despesas à serem pagas
      * @return List<ResponsePagamento>: Lista com retorno de cada pagamento do lote
      */
     public List<ResponsePagamento> expenseBarcodePayment(List<TransacaoCodigoBarras> transacoesCodigoBarras) throws IOException, ParseException, PJBankException {
+        if (transacoesCodigoBarras.size() == 1)
+            return new ArrayList<>(Arrays.asList(this.expenseBarcodePayment(transacoesCodigoBarras.get(0))));
+
         PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
@@ -144,7 +187,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
-        JSONArray responseArray = new JSONObject(response).getJSONArray("data");
+        JSONArray responseArray = new JSONArray(response);
         List<ResponsePagamento> responsesPagamentos = new ArrayList<>();
 
         for(int i = 0; i < responseArray.length(); i++) {
@@ -159,20 +202,6 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
             if (!StringUtils.isBlank(dataPagamento))
                 responsePagamento.setDataPagamento(dateFormat.parse(dataPagamento));
 
-            if (object.has("response_callback")) {
-                JSONObject responseCallbackObject = object.getJSONObject("response_callback");
-                ResponseCallback responseCallback = new ResponseCallback();
-                responseCallback.setStatus(responseCallbackObject.getInt("status"));
-                responseCallback.setMessage(responseCallbackObject.getString("msg"));
-
-                if (responseCallbackObject.has("data")) {
-                    Map<String, Object> dataMap = JSONUtils.toMap(responseCallbackObject.getJSONObject("data"));
-                    responseCallback.setData(dataMap);
-                }
-
-                responsePagamento.setResponseCallback(responseCallback);
-            }
-
             responsesPagamentos.add(responsePagamento);
         }
 
@@ -181,10 +210,65 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
     /**
      * Realiza uma transferência via DOC/TED a partir da Conta Digital
+     * @param transferencia: Transferência à ser executada
+     * @return ResponseTransferencia: Retorno da transferência
+     */
+    public ResponseTransferencia docTedTransfer(TransacaoTransferencia transferencia) throws IOException, ParseException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        JSONArray despesasArray = new JSONArray();
+
+        JSONObject despesaObject = new JSONObject();
+        despesaObject.put("data_pagamento", dateFormat.format(transferencia.getDataPagamento()));
+        despesaObject.put("data_vencimento", dateFormat.format(transferencia.getDataVencimento()));
+        despesaObject.put("valor", transferencia.getValor());
+        despesaObject.put("banco_favorecido", transferencia.getBancoFavorecido());
+        despesaObject.put("conta_favorecido", transferencia.getContaFavorecido());
+        despesaObject.put("agencia_favorecido", transferencia.getAgenciaFavorecido());
+        despesaObject.put("nome_favorecido", transferencia.getNomeFavorecido());
+        despesaObject.put("cnpj_favorecido", transferencia.getCnpjFavorecido());
+        despesaObject.put("identificador", transferencia.getIdentificador());
+        despesaObject.put("descricao", transferencia.getDescricao());
+        despesaObject.put("solicitante", transferencia.getSolicitante());
+        despesaObject.put("tipo_conta_favorecido", transferencia.getTipoContaFavorecido().getName());
+
+        despesasArray.put(despesaObject);
+
+        JSONObject params = new JSONObject();
+        params.put("lote", despesasArray);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+
+        JSONObject responseObject = new JSONObject(response);
+
+        ResponseTransferencia responseTransferencia = new ResponseTransferencia();
+        responseTransferencia.setIdentificador(responseObject.getString("identificador"));
+        responseTransferencia.setIdOperacao(responseObject.getString("id_operacao"));
+
+        String dataPagamento = responseObject.getString("data_pagamento");
+        if (!StringUtils.isBlank(dataPagamento))
+            responseTransferencia.setDataPagamento(dateFormat.parse(dataPagamento));
+
+        responseTransferencia.setStatus(responseObject.getInt("status"));
+        responseTransferencia.setMessage(responseObject.getString("msg"));
+
+        return responseTransferencia;
+    }
+
+    /**
+     * Realiza várias transferências via DOC/TED a partir da Conta Digital
      * @param transferencias: Transferências à serem executadas
      * @return List<ResponseTransferencia>: Lista com retorno de cada transferência do lote
      */
     public List<ResponseTransferencia> docTedTransfer(List<TransacaoTransferencia> transferencias) throws IOException, ParseException, PJBankException {
+        if (transferencias.size() == 1)
+            return new ArrayList<>(Arrays.asList(this.docTedTransfer(transferencias.get(0))));
+
         PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
@@ -217,7 +301,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
-        JSONArray responseArray = new JSONObject(response).getJSONArray("data");
+        JSONArray responseArray = new JSONArray(response);
         List<ResponseTransferencia> responsesTransferencias = new ArrayList<>();
 
         for(int i = 0; i < responseArray.length(); i++) {
@@ -294,18 +378,18 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
 
-        JSONArray responseArray = new JSONObject(response).getJSONArray("data");
+        JSONArray responseArray = new JSONArray(response);
         List<TransacaoExtrato> transacoesExtrato = new ArrayList<>();
 
         for(int i = 0; i < responseArray.length(); i++) {
             JSONObject responseObject = (JSONObject) responseArray.get(i);
 
             TransacaoExtrato transacaoExtrato = new TransacaoExtrato();
-            transacaoExtrato.setIdTransacao(responseObject.getString("id"));
+            transacaoExtrato.setIdTransacao(responseObject.getString("id_operacao"));
             transacaoExtrato.setIdentificador(responseObject.getString("identificador"));
-            transacaoExtrato.setFavorecido(responseObject.getString("favorecido"));
+            transacaoExtrato.setNomeFavorecido(responseObject.getString("nome_favorecido"));
             transacaoExtrato.setCnpjFavorecido(responseObject.getString("cnpj_favorecido"));
-            transacaoExtrato.setData(dateFormat.parse(responseObject.getString("data")));
+            transacaoExtrato.setDataPagamento(dateFormat.parse(responseObject.getString("data_pagamento")));
             transacaoExtrato.setValor(responseObject.getDouble("valor"));
             transacaoExtrato.setHistorico(responseObject.getString("historico"));
             transacaoExtrato.setTipo(TipoTransacao.fromString(responseObject.getString("tipo_transacao")));
@@ -318,10 +402,53 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
     /**
      * Realiza uma transferência da Conta Digital para um Subconta Digital
+     * @param transacaoTransferenciasContaSubconta: Transferências à serem realizadas
+     * @return ResponseTransferencia: Retorno da transferência
+     */
+    public ResponseTransferencia accountToSubaccountTransfer(TransacaoTransferenciaInterna transacaoTransferenciasContaSubconta) throws IOException, ParseException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        JSONArray transferenciasArray = new JSONArray();
+
+        JSONObject transferenciaObject = new JSONObject();
+        transferenciaObject.put("data_vencimento", dateFormat.format(transacaoTransferenciasContaSubconta.getDataVencimento()));
+        transferenciaObject.put("valor", transacaoTransferenciasContaSubconta.getValor());
+        transferenciaObject.put("conta_destino", transacaoTransferenciasContaSubconta.getContaDestino());
+
+        if (StringUtils.isNotBlank(transacaoTransferenciasContaSubconta.getContaOrigem()))
+            transferenciaObject.put("conta_origem", transacaoTransferenciasContaSubconta.getContaOrigem());
+
+        transferenciasArray.put(transferenciaObject);
+
+        JSONObject params = new JSONObject();
+        params.put("lote", transferenciasArray);
+
+        httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
+
+        JSONObject responseObject = new JSONObject(response);
+
+        ResponseTransferencia responseTransferencia = new ResponseTransferencia();
+        responseTransferencia.setIdOperacao(responseObject.getString("id_operacao"));
+        responseTransferencia.setStatus(responseObject.getInt("status"));
+        responseTransferencia.setMessage(responseObject.getString("msg"));
+
+        return responseTransferencia;
+    }
+
+    /**
+     * Realiza várioas transferências da Conta Digital para um Subconta Digital
      * @param transacoesTransferenciasContaSubconta: Transferências à serem realizadas
-     * @return List<ResponseTransferencia>: Lista com retorno de cada pagamento do lote
+     * @return List<ResponseTransferencia>: Lista com retorno de cada transferência do lote
      */
     public List<ResponseTransferencia> accountToSubaccountTransfer(List<TransacaoTransferenciaInterna> transacoesTransferenciasContaSubconta) throws IOException, ParseException, PJBankException {
+        if (transacoesTransferenciasContaSubconta.size() == 1)
+            return new ArrayList<>(Arrays.asList(this.accountToSubaccountTransfer(transacoesTransferenciasContaSubconta.get(0))));
+
         PJBankClient client = new PJBankClient(this.endPoint.replace("{{credencial-conta}}", this.credencial).concat("/transacoes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave-conta", this.chave);
@@ -348,7 +475,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
-        JSONArray responseArray = new JSONObject(response).getJSONArray("data");
+        JSONArray responseArray = new JSONArray(response);
         List<ResponseTransferencia> responsesTransferencias = new ArrayList<>();
 
         for(int i = 0; i < responseArray.length(); i++) {

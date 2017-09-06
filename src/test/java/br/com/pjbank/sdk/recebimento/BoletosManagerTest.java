@@ -64,7 +64,7 @@ public class BoletosManagerTest {
 
         boletosManager.create(boletoRecebimento);
 
-        Assert.assertThat(boletoRecebimento.getNossoNumero(), not(is(emptyOrNullString())));
+        Assert.assertThat(boletoRecebimento.getIdUnico(), not(is(emptyOrNullString())));
         // TODO: Verificar se os parâmetros abaixo continuarão sendo retornados.
         /* Assert.assertThat(boletoRecebimento.getId(), not(is(emptyOrNullString())));
         Assert.assertThat(boletoRecebimento.getBanco(), not(is(emptyOrNullString())));
