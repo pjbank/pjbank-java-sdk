@@ -70,7 +70,7 @@ public class Credenciamento {
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
 
-        JSONObject responseObject = new JSONObject(response).getJSONObject("data");
+        JSONObject responseObject = new JSONObject(response);
 
         Cliente cliente = new Cliente();
         cliente.setNome(responseObject.getString("nome_empresa"));

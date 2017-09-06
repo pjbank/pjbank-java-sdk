@@ -6,25 +6,25 @@ package br.com.pjbank.sdk.models.common;
  * @since 1.0
  */
 public class Boleto {
-    private String nossoNumero;
+    private String idUnico;
     private String linkBoleto;
     private String linhaDigitavel;
 
     public Boleto() {
     }
 
-    public Boleto(String nossoNumero, String linkBoleto, String linhaDigitavel) {
-        this.nossoNumero = nossoNumero;
+    public Boleto(String idUnico, String linkBoleto, String linhaDigitavel) {
+        this.idUnico = idUnico;
         this.linkBoleto = linkBoleto;
         this.linhaDigitavel = linhaDigitavel;
     }
 
-    public String getNossoNumero() {
-        return nossoNumero;
+    public String getIdUnico() {
+        return idUnico;
     }
 
-    public void setNossoNumero(String nossoNumero) {
-        this.nossoNumero = nossoNumero;
+    public void setIdUnico(String idUnico) {
+        this.idUnico = idUnico;
     }
 
     public String getLinkBoleto() {

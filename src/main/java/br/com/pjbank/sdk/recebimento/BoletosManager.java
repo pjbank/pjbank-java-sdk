@@ -69,7 +69,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
         String response = EntityUtils.toString(client.doRequest(httpPost).getEntity());
 
         JSONObject responseObject = new JSONObject(response);
-        boletoRecebimento.setNossoNumero(responseObject.getString("nossonumero"));
+        boletoRecebimento.setIdUnico(responseObject.getString("nossonumero"));
         boletoRecebimento.setLinkBoleto(responseObject.getString("linkBoleto"));
         boletoRecebimento.setLinkGrupo(responseObject.getString("linkGrupo"));
         boletoRecebimento.setLinhaDigitavel(responseObject.getString("linhaDigitavel"));

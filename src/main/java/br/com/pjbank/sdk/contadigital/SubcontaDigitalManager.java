@@ -65,7 +65,7 @@ public class SubcontaDigitalManager extends PJBankAuthenticatedService {
         subconta.setNumero(responseObject.getString("numero_cartao"));
 
         Boleto boleto = new Boleto();
-        boleto.setNossoNumero(responseObject.getString("nosso_numero"));
+        boleto.setIdUnico(responseObject.getString("nosso_numero"));
         boleto.setLinkBoleto(responseObject.getString("link_boleto"));
         boleto.setLinhaDigitavel(responseObject.getString("linha_digitavel"));
         subconta.setBoleto(boleto);
