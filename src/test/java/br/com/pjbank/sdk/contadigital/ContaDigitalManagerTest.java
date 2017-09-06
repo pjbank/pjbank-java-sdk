@@ -398,4 +398,12 @@ public class ContaDigitalManagerTest {
         Assert.assertThat(String.valueOf(responseTransferencia.getStatus()), not(is(emptyOrNullString())));
         Assert.assertThat(responseTransferencia.getMessage(), not(is(emptyOrNullString())));
     }
+
+    @Test
+    @Ignore
+    public void manageWebhookURL() throws IOException, JSONException, PJBankException {
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
+
+        contaDigitalManager.manageWebhookURL("https://pjbank.com.br");
+    }
 }

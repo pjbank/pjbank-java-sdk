@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -494,4 +495,25 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         return responsesTransferencias;
     }
 
+    /**
+     * Realiza a adição ou edição da URL que deve ser utilizada pelos webhooks da Conta Digital
+     * @param url: URL à ser configurada como Webhook
+     * @return boolean
+     */
+    public boolean manageWebhookURL(String url) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint);
+        HttpPut httpPut = client.getHttpPutClient();
+        httpPut.addHeader("x-chave-conta", this.chave);
+
+        JSONObject params = new JSONObject();
+        params.put("webhook", url);
+
+        httpPut.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
+
+        String response = EntityUtils.toString(client.doRequest(httpPut).getEntity());
+
+        JSONObject responseObject = new JSONObject(response);
+
+        return url.equals(responseObject.getString("webhook"));
+    }
 }
