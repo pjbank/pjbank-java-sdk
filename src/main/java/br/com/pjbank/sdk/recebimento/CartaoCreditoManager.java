@@ -169,7 +169,7 @@ public class CartaoCreditoManager extends PJBankAuthenticatedService {
     }
 
     /**
-     * Realização o cancelamento de uma transação via cartão de crédito
+     * Realiza o cancelamento de uma transação via cartão de crédito
      * @param idTransacao: Código identificador da transação a ser cancelada
      * @return boolean
      */
