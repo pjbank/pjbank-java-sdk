@@ -14,7 +14,7 @@ Em breve o SDK será disponibilizado para download como .jar ou através dos rep
 Para utilizar o SDK em modo Sandbox enquanto sua integração estiver em desenvolvimento, basta adicionar a seguinte variável em suas variáveis de inicialização da JVM (https://stackoverflow.com/questions/39188826/what-are-custom-jvm-properties):
 
 ```
-**-Dpjbank-env=dev**
+-Dpjbank-env=dev
 ```
 
 Por padrão, caso nenhuma variável seja definida, o SDK executará suas ações na API em ambiente de Produção (https://api.pjbank.com.br). Ao definir a variável **pjbank-env=dev** o SDK passará a executar suas ações na API em ambiente de Sandbox onde não há limitações para testes (https://sandbox.pjbank.com.br). Uma vez que a aplicação esteja em produção, não há a necessidade de definir nenhuma variável de ambiente.
