@@ -82,7 +82,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
      * @param pedidos: Lista de códigos de pedidos os quais deseja retornar os boletos
      * @return String: Link contendo os boletos relacionados aos códigos de pedidos enviados
      */
-    public String get(Set<String> pedidos) throws IOException, PJBankException {
+    public String getByIds(Set<String> pedidos) throws IOException, PJBankException {
         PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes/lotes"));
         HttpPost httpPost = client.getHttpPostClient();
         httpPost.addHeader("x-chave", this.getChave());
