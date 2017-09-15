@@ -9,7 +9,12 @@ public class PJBankConfig {
     /**
      * URL base da API
      */
-    public final static String apiBaseUrl = "https://api.pjbank.com.br/";
+    private final static String apiBaseUrlProducao = "https://api.pjbank.com.br/";
+
+    /**
+     * URL base da API
+     */
+    private final static String apiBaseUrlSandbox = "https://sandbox.pjbank.com.br/";
 
     /**
      * Versão da API a ser consumida pelo SDK
@@ -27,4 +32,16 @@ public class PJBankConfig {
      * Content-type padrão com MIME-type que o client utilizará
      */
     public final static String contentType = "application/json";
+
+    /**
+     * Retorna a URL da API baseada no valor da variável de JVM "pjbank-env". Caso não haja valor definido, será usado o
+     * ambiente dev/sandbox por padrão.
+     * @return String
+     */
+    public static String getApiBaseUrl() {
+        if ("dev".equals(System.getProperty("pjbank-env")))
+            return PJBankConfig.apiBaseUrlSandbox;
+        else
+            return PJBankConfig.apiBaseUrlProducao;
+    }
 }
