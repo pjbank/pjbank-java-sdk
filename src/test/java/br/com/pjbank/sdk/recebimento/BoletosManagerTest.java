@@ -81,7 +81,7 @@ public class BoletosManagerTest {
 
         BoletosManager boletosManager = new BoletosManager(this.credencial, this.chave);
 
-        String boletos = boletosManager.get(pedidos);
+        String boletos = boletosManager.getByIds(pedidos);
 
         Assert.assertThat(boletos, not(is(emptyOrNullString())));
     }
@@ -96,7 +96,7 @@ public class BoletosManagerTest {
 
         BoletosManager boletosManager = new BoletosManager(this.credencial, this.chave);
 
-        String boletos = boletosManager.get(pedidos);
+        String boletos = boletosManager.getByIds(pedidos);
 
         Assert.assertThat(boletos, not(is(emptyOrNullString())));
     }
@@ -108,6 +108,6 @@ public class BoletosManagerTest {
 
         BoletosManager boletosManager = new BoletosManager(this.credencial, this.chave);
 
-        boletosManager.get(pedidos);
+        boletosManager.getByIds(pedidos);
     }
 }
