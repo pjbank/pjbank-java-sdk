@@ -1,17 +1,25 @@
 package br.com.pjbank.sdk.recebimento;
 
+import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Cliente;
 import br.com.pjbank.sdk.models.common.Endereco;
 import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
+import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
+
+import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
@@ -109,5 +117,22 @@ public class BoletosManagerTest {
         BoletosManager boletosManager = new BoletosManager(this.credencial, this.chave);
 
         boletosManager.getByIds(pedidos);
+    }
+    
+    @Test
+    public void get() throws IOException, JSONException, PJBankException, ParseException, URISyntaxException, java.text.ParseException {
+    		BoletosManager manager = new BoletosManager(this.credencial, this.chave);
+    		LocalDate inicio = LocalDate.of(2001, 1, 29);
+    		LocalDate fim = LocalDate.now();
+    		List<ExtratoBoleto>extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.ABERTO);
+    		for(ExtratoBoleto extrato: extratos) {
+			Assert.assertThat(extrato.getDataPagamento(), nullValue(Date.class));
+		}
+    		
+    		extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.PAGO);
+    		for(ExtratoBoleto extrato: extratos) {
+			Assert.assertThat(extrato.getDataPagamento(), not(nullValue(Date.class)));
+		}
+    		
     }
 }
