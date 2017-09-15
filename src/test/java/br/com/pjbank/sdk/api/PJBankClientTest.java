@@ -37,7 +37,8 @@ public class PJBankClientTest {
         PJBankClient pjBankClient = new PJBankClient(endPoint);
         HttpGet client = pjBankClient.getHttpGetClient();
 
-        String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
+        String urlBase = "dev".equals(System.getProperty("pjbank-env")) ? "https://sandbox.pjbank.com.br/" : "https://api.pjbank.com.br/";
+        String urlEsperado = urlBase.concat(endPoint);
         String acceptHeaderEsperado = "application/json";
         String contentTypeHeaderEsperado = "application/json";
 
@@ -52,7 +53,8 @@ public class PJBankClientTest {
         PJBankClient pjBankClient = new PJBankClient(endPoint);
         HttpPost client = pjBankClient.getHttpPostClient();
 
-        String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
+        String urlBase = "dev".equals(System.getProperty("pjbank-env")) ? "https://sandbox.pjbank.com.br/" : "https://api.pjbank.com.br/";
+        String urlEsperado = urlBase.concat(endPoint);
         String acceptHeaderEsperado = "application/json";
         String contentTypeHeaderEsperado = "application/json";
 
@@ -67,7 +69,8 @@ public class PJBankClientTest {
         PJBankClient pjBankClient = new PJBankClient(endPoint);
         HttpPut client = pjBankClient.getHttpPutClient();
 
-        String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
+        String urlBase = "dev".equals(System.getProperty("pjbank-env")) ? "https://sandbox.pjbank.com.br/" : "https://api.pjbank.com.br/";
+        String urlEsperado = urlBase.concat(endPoint);
         String acceptHeaderEsperado = "application/json";
         String contentTypeHeaderEsperado = "application/json";
 
@@ -82,7 +85,8 @@ public class PJBankClientTest {
         PJBankClient pjBankClient = new PJBankClient(endPoint);
         HttpDelete client = pjBankClient.getHttpDeleteClient();
 
-        String urlEsperado = "https://api.pjbank.com.br/".concat(endPoint);
+        String urlBase = "dev".equals(System.getProperty("pjbank-env")) ? "https://sandbox.pjbank.com.br/" : "https://api.pjbank.com.br/";
+        String urlEsperado = urlBase.concat(endPoint);
         String acceptHeaderEsperado = "application/json";
         String contentTypeHeaderEsperado = "application/json";
 
