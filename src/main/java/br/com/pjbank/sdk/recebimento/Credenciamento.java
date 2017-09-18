@@ -30,6 +30,16 @@ public class Credenciamento {
     public CredencialRecebimento create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
                                         String cnpj, int ddd, int telefone, String email, FormaRecebimento formaRecebimento)
             throws IOException, PJBankException {
+        return this.create(nomeEmpresa, bancoRepasse, agenciaRepasse, contaRepasse, cnpj, ddd, telefone, email, formaRecebimento, null);
+    }
+    
+    /**
+     * Gera uma credencial única por empresa para recebimento via boleto bancário com a opção de informar a agencia do parceiro
+     * @return Crendencial
+     */
+    public CredencialRecebimento create(String nomeEmpresa, String bancoRepasse, String agenciaRepasse, String contaRepasse,
+                                        String cnpj, int ddd, int telefone, String email, FormaRecebimento formaRecebimento, String agenciaParceiro)
+            throws IOException, PJBankException {
         PJBankClient client = new PJBankClient(this.endPoint);
         HttpPost httpPost = client.getHttpPostClient();
 
@@ -43,6 +53,9 @@ public class Credenciamento {
         params.put("telefone", String.valueOf(telefone));
         params.put("email", email);
         params.put("cartao", formaRecebimento == FormaRecebimento.CARTAO_CREDITO);
+        if(agenciaParceiro != null) {
+        		params.put("agencia", agenciaParceiro);
+        }
 
         httpPost.setEntity(new StringEntity(params.toString(), StandardCharsets.UTF_8));
 

@@ -38,6 +38,28 @@ public class CredenciamentoTest {
         Assert.assertThat(credencialRecebimento.getChave(), not(is(emptyOrNullString())));
         Assert.assertThat(credencialRecebimento.getContaVirtual(), not(is(emptyOrNullString())));
     }
+    
+    @Test
+    @Ignore
+    public void createCredenciamentoBoletoComAgenciaParceira() throws IOException, JSONException, PJBankException {
+        Credenciamento credenciamento = new Credenciamento();
+
+        CredencialRecebimento credencialRecebimento = credenciamento
+                .create("Empresa de Exemplo",
+                        "001",
+                        "0001",
+                        "99999-9",
+                        "01181347000140",
+                        19,
+                        40096830,
+                        "atendimento@pjbank.com.br",
+                        FormaRecebimento.BOLETO_BANCARIO,
+                        "0034");
+
+        Assert.assertThat(credencialRecebimento.getCredencial(), not(is(emptyOrNullString())));
+        Assert.assertThat(credencialRecebimento.getChave(), not(is(emptyOrNullString())));
+        Assert.assertThat(credencialRecebimento.getContaVirtual(), not(is(emptyOrNullString())));
+    }
 
     @Test
     @Ignore
