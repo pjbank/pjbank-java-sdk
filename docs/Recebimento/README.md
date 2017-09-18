@@ -419,7 +419,7 @@ Um cancelamento de transação pode ser realizado, porém, existem regras dos ad
 
 Quanto antes for feito, maior a chance de sucesso.
 
-Para cancelar uma transação via cartão de crédito instanciar a classe `br.com.pjbank.sdk.recebimento.CartaoCreditoManager` e utilizar o método `delete` enviando, por parâmetro, o id da transação a ser cancelada como no exemplo abaixo:
+Para cancelar uma transação via cartão de crédito basta instanciar a classe `br.com.pjbank.sdk.recebimento.CartaoCreditoManager` e utilizar o método `delete` enviando, por parâmetro, o id da transação a ser cancelada como no exemplo abaixo:
 
 ```java
 package br.com.viniciusls.app.services;
@@ -454,3 +454,169 @@ Como exceção, pode-se retornar as seguintes:
 - PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
 
 Documentação: https://docs.pjbank.com.br/#3fc57c0d-4b60-331a-0e40-2fe2992e36c7
+
+## Extrato - Cartão de Crédito
+
+Na emissão de extrato, pode-se emitir um extrato completo (sem filtros) ou com algumas opções de filtros como `pago`, `data_inicio`, `data_fim` e `pagina`. Apesar de demonstrá-los de maneira separada abaixo, é possível combinar quais filtros forem necessários em sua requisição.
+
+### Extrato geral
+
+Para emitir um extrato de transações via Cartão de Crédito sem filtros basta instanciar a classe `br.com.pjbank.sdk.recebimento.CartaoCreditoManager` e utilizar o método `get` enviando via parâmetro um HashMap vazio como no exemplo abaixo:
+
+```java
+package br.com.viniciusls.app.services;
+
+import br.com.pjbank.sdk.models.recebimento.Boleto;
+import br.com.pjbank.sdk.recebimento.BoletosManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class CartaoCreditoService {
+    /**
+         * Retorna a lista de transações emitidos via cartão de crédito
+         * @return List<PagamentoCartaoCredito>: lista de transações
+         */
+    public List<PagamentoCartaoCredito> extrato() {
+        try {
+            CartaoCreditoManager cartaoCreditoManager = new CartaoCreditoManager(this.credencial, this.chave);
+    
+            return cartaoCreditoManager.get(new HashMap<String, String>());
+        } catch (PJBankException e) {
+            // catch block
+        }
+    }
+
+}
+```
+
+Assim, será retornada uma lista contendo cada transação emitida via cartão de crédito.
+Como exceção, pode-se retornar as seguintes:
+
+- PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
+
+Documentação: https://docs.pjbank.com.br/#aeac7b38-1cda-cbdf-ced0-19fd031e43f6
+
+### Extrato de pagamentos liquidados
+
+Para emitir um extrato de transações via Cartão de Crédito com status de liquidada basta instanciar a classe `br.com.pjbank.sdk.recebimento.CartaoCreditoManager` e utilizar o método `get` enviando via parâmetro um HashMap contendo o filtro **`pago`** com valor **`1`** como no exemplo abaixo:
+
+```java
+package br.com.viniciusls.app.services;
+
+import br.com.pjbank.sdk.models.recebimento.Boleto;
+import br.com.pjbank.sdk.recebimento.BoletosManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class CartaoCreditoService {
+    /**
+         * Retorna a lista de transações emitidos via cartão de crédito
+         * @return List<PagamentoCartaoCredito>: lista de transações
+         */
+    public List<PagamentoCartaoCredito> extrato() {
+        try {
+            CartaoCreditoManager cartaoCreditoManager = new CartaoCreditoManager(this.credencial, this.chave);
+    
+            Map<String, String> filtros = new HashMap<>();
+            filtros.put("pago", 1);
+            
+            return cartaoCreditoManager.get(filtros);
+        } catch (PJBankException e) {
+            // catch block
+        }
+    }
+
+}
+```
+
+Assim, será retornada uma lista contendo cada transação emitida via cartão de crédito que já tenha sido liquidada.
+Como exceção, pode-se retornar as seguintes:
+
+- PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
+
+Documentação: https://docs.pjbank.com.br/#a1f847d2-a1de-7aa2-fbd1-9b5b17aa94ea
+
+### Extrato de pagamentos filtrados por data
+
+Para emitir um extrato de transações via Cartão de Crédito entre um determinado período basta instanciar a classe `br.com.pjbank.sdk.recebimento.CartaoCreditoManager` e utilizar o método `get` enviando via parâmetro um HashMap contendo os filtros **`data_inicio`** e **`data_fim`** em formato **`m/d/Y`** como no exemplo abaixo:
+
+```java
+package br.com.viniciusls.app.services;
+
+import br.com.pjbank.sdk.models.recebimento.Boleto;
+import br.com.pjbank.sdk.recebimento.BoletosManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class CartaoCreditoService {
+    /**
+         * Retorna a lista de transações emitidos via cartão de crédito
+         * @return List<PagamentoCartaoCredito>: lista de transações
+         */
+    public List<PagamentoCartaoCredito> extrato() {
+        try {
+            CartaoCreditoManager cartaoCreditoManager = new CartaoCreditoManager(this.credencial, this.chave);
+    
+            Map<String, String> filtros = new HashMap<>();
+            filtros.put("data_inicio", "08/01/2017");
+            filtros.put("data_fim", "09/01/2017");
+            
+            return cartaoCreditoManager.get(filtros);
+        } catch (PJBankException e) {
+            // catch block
+        }
+    }
+
+}
+```
+
+Assim, será retornada uma lista contendo cada transação emitida via cartão de crédito no período definido.
+Como exceção, pode-se retornar as seguintes:
+
+- PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
+
+Documentação: https://docs.pjbank.com.br/#c6946e68-3b94-ef66-3a00-f15128d478fe
+
+### Extrato de pagamentos com paginação
+
+Para emitir um extrato de transações via Cartão de Crédito com paginação basta instanciar a classe `br.com.pjbank.sdk.recebimento.CartaoCreditoManager` e utilizar o método `get` enviando via parâmetro um HashMap contendo o filtro **`pagina`** com o valor sendo o número da página desejada como no exemplo abaixo:
+
+```java
+package br.com.viniciusls.app.services;
+
+import br.com.pjbank.sdk.models.recebimento.Boleto;
+import br.com.pjbank.sdk.recebimento.BoletosManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class CartaoCreditoService {
+    /**
+         * Retorna a lista de transações emitidos via cartão de crédito
+         * @return List<PagamentoCartaoCredito>: lista de transações
+         */
+    public List<PagamentoCartaoCredito> extrato() {
+        try {
+            CartaoCreditoManager cartaoCreditoManager = new CartaoCreditoManager(this.credencial, this.chave);
+    
+            Map<String, String> filtros = new HashMap<>();
+            filtros.put("pagina", "2");
+            
+            return cartaoCreditoManager.get(filtros);
+        } catch (PJBankException e) {
+            // catch block
+        }
+    }
+
+}
+```
+
+Assim, será retornada uma lista contendo cada transação emitida via cartão de crédito no período definido.
+Como exceção, pode-se retornar as seguintes:
+
+- PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
+
+Documentação: https://docs.pjbank.com.br/#2bff2e30-47e6-4571-e358-32f110de4f47
