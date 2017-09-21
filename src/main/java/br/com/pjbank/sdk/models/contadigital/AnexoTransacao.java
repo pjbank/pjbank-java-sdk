@@ -1,12 +1,13 @@
 package br.com.pjbank.sdk.models.contadigital;
 
 import br.com.pjbank.sdk.enums.FormatoArquivo;
+import br.com.pjbank.sdk.enums.TipoAnexo;
 
 import java.util.Date;
 
 public class AnexoTransacao {
     private String url;
-    private String tipo;
+    private TipoAnexo tipo;
     private String nome;
     private FormatoArquivo formato;
     private long tamanho;
@@ -15,7 +16,7 @@ public class AnexoTransacao {
     public AnexoTransacao() {
     }
 
-    public AnexoTransacao(String url, String tipo, String nome, FormatoArquivo formato, long tamanho, Date data) {
+    public AnexoTransacao(String url, TipoAnexo tipo, String nome, FormatoArquivo formato, long tamanho, Date data) {
         this.url = url;
         this.tipo = tipo;
         this.nome = nome;
@@ -32,11 +33,11 @@ public class AnexoTransacao {
         this.url = url;
     }
 
-    public String getTipo() {
+    public TipoAnexo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoAnexo tipo) {
         this.tipo = tipo;
     }
 

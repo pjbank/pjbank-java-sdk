@@ -1,8 +1,11 @@
 package br.com.pjbank.sdk.contadigital;
 
 import br.com.pjbank.sdk.api.PJBankClient;
+import br.com.pjbank.sdk.api.PJBankConfig;
 import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
+import br.com.pjbank.sdk.enums.FormatoArquivo;
 import br.com.pjbank.sdk.enums.FormatoExtrato;
+import br.com.pjbank.sdk.enums.TipoAnexo;
 import br.com.pjbank.sdk.enums.TipoTransacao;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
@@ -444,7 +447,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
     }
 
     /**
-     * Realiza várioas transferências da Conta Digital para um Subconta Digital
+     * Realiza várias transferências da Conta Digital para um Subconta Digital
      * @param transacoesTransferenciasContaSubconta: Transferências à serem realizadas
      * @return List<ResponseTransferencia>: Lista com retorno de cada transferência do lote
      */
@@ -515,5 +518,48 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         JSONObject responseObject = new JSONObject(response);
 
         return url.equals(responseObject.getString("webhook"));
+    }
+
+    /**
+     * Realiza a adição ou edição da URL que deve ser utilizada pelos webhooks da Conta Digital
+     * @param idTransacao: Código da transação à ser consultada
+     * @param tipoAnexo: Tipo de anexo à ser retornado
+     * @return boolean
+     */
+    public List<AnexoTransacao> getTransactionFiles(String idTransacao, TipoAnexo tipoAnexo) throws IOException,
+            URISyntaxException, ParseException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes/").concat(idTransacao).concat("/documentos"));
+        HttpGet httpGet = client.getHttpGetClient();
+        httpGet.addHeader("x-chave-conta", this.chave);
+
+        if (tipoAnexo != null) {
+            URIBuilder uriBuilder = new URIBuilder(httpGet.getURI());
+
+            uriBuilder.addParameter("tipo", tipoAnexo.getName());
+
+            httpGet.setURI(uriBuilder.build());
+        }
+
+        String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
+
+        JSONArray responseArray = new JSONArray(response);
+        List<AnexoTransacao> anexosTransacao = new ArrayList<>();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        for(int i = 0; i < responseArray.length(); i++) {
+            JSONObject object = (JSONObject) responseArray.get(i);
+
+            AnexoTransacao anexoTransacao = new AnexoTransacao();
+            anexoTransacao.setUrl(object.getString("imagem"));
+            anexoTransacao.setTipo(TipoAnexo.fromString(object.getString("tipo")));
+            anexoTransacao.setNome(object.getString("nome"));
+            anexoTransacao.setFormato(FormatoArquivo.fromString(object.getString("formato")));
+            anexoTransacao.setTamanho(object.getLong("tamanho"));
+            anexoTransacao.setData(dateFormat.parse(object.getString("data")));
+
+            anexosTransacao.add(anexoTransacao);
+        }
+
+        return anexosTransacao;
     }
 }
