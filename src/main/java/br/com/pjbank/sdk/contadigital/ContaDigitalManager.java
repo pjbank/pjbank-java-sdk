@@ -521,7 +521,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
     }
 
     /**
-     * Realiza a adição ou edição da URL que deve ser utilizada pelos webhooks da Conta Digital
+     * Retorna a lista de anexos de uma transação com ou sem filtro de tipo
      * @param idTransacao: Código da transação à ser consultada
      * @param tipoAnexo: Tipo de anexo à ser retornado
      * @return boolean
