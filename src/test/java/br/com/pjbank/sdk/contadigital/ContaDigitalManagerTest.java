@@ -1,11 +1,13 @@
 package br.com.pjbank.sdk.contadigital;
 
 import br.com.pjbank.sdk.enums.FormatoExtrato;
+import br.com.pjbank.sdk.enums.TipoAnexo;
 import br.com.pjbank.sdk.enums.TipoConta;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.*;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -404,6 +406,43 @@ public class ContaDigitalManagerTest {
     public void manageWebhookURL() throws IOException, JSONException, PJBankException {
         ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
-        contaDigitalManager.manageWebhookURL("https://pjbank.com.br");
+        Assert.assertTrue(contaDigitalManager.manageWebhookURL("https://pjbank.com.br"));
+    }
+
+    @Test
+    public void getTransactionFilesSemTipoEspecificado() throws IOException, JSONException, URISyntaxException, ParseException, PJBankException {
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+
+        List<AnexoTransacao> anexosTransacao = contaDigitalManager.getTransactionFiles("1000000001259", null);
+
+        // O teste só será executado caso haja algum anexo na transação, do contrário não há como testar
+        if (anexosTransacao.size() > 0) {
+            AnexoTransacao anexoTransacao = anexosTransacao.get(0);
+            Assert.assertThat(anexoTransacao.getUrl(), not(is(emptyOrNullString())));
+            Assert.assertThat(anexoTransacao.getTipo(), not(is(nullValue())));
+            Assert.assertThat(anexoTransacao.getNome(), not(is(emptyOrNullString())));
+            Assert.assertThat(anexoTransacao.getFormato(), not(is(nullValue())));
+            Assert.assertThat(String.valueOf(anexoTransacao.getTamanho()), not(is(emptyOrNullString())));
+            Assert.assertThat(anexoTransacao.getData(), not(is(nullValue())));
+        }
+    }
+
+    @Test
+    public void getTransactionFilesComTipoEspecificado() throws IOException, JSONException, URISyntaxException, ParseException, PJBankException {
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+
+        List<AnexoTransacao> anexosTransacao = contaDigitalManager.getTransactionFiles("1000000001259", TipoAnexo.NOTAFISCAL);
+
+        // O teste só será executado caso haja algum anexo na transação, do contrário não há como testar
+        if (anexosTransacao.size() > 0) {
+            AnexoTransacao anexoTransacao = anexosTransacao.get(0);
+            Assert.assertThat(anexoTransacao.getUrl(), not(is(emptyOrNullString())));
+            Assert.assertThat(anexoTransacao.getTipo(), not(is(nullValue())));
+            Assert.assertEquals(TipoAnexo.NOTAFISCAL, anexoTransacao.getTipo());
+            Assert.assertThat(anexoTransacao.getNome(), not(is(emptyOrNullString())));
+            Assert.assertThat(anexoTransacao.getFormato(), not(is(nullValue())));
+            Assert.assertThat(String.valueOf(anexoTransacao.getTamanho()), not(is(emptyOrNullString())));
+            Assert.assertThat(anexoTransacao.getData(), not(is(nullValue())));
+        }
     }
 }
