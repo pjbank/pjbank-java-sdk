@@ -44,4 +44,13 @@ public class PJBankConfig {
         else
             return PJBankConfig.apiBaseUrlProducao;
     }
+
+    /**
+     * Retorna a URL da API baseada no valor da variável de JVM "pjbank-env". Caso não haja valor definido, será usado o
+     * ambiente dev/sandbox por padrão.
+     * @return String
+     */
+    public static boolean isDebugMode() {
+        return "true".equals(System.getProperty("pjbank-debug"));
+    }
 }
