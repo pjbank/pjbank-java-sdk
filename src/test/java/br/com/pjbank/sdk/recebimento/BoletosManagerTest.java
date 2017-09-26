@@ -1,5 +1,6 @@
 package br.com.pjbank.sdk.recebimento;
 
+import br.com.pjbank.sdk.api.PJBankConfigTest;
 import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Cliente;
@@ -35,8 +36,8 @@ public class BoletosManagerTest {
 
     @Before
     public void init() {
-        this.credencial = "d3418668b85cea70aa28965eafaf927cd34d004c";
-        this.chave = "46e79d6d5161336afa7b98f01236efacf5d0f24b";
+        this.credencial = PJBankConfigTest.credencialBoletosContaRecebimento;
+        this.chave = PJBankConfigTest.chaveBoletosContaRecebimento;
     }
 
     @Test
