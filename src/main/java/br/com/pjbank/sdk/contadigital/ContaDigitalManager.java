@@ -542,8 +542,14 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
 
-        JSONArray responseArray = new JSONArray(response);
         List<AnexoTransacao> anexosTransacao = new ArrayList<>();
+
+        JSONObject responseObject = new JSONObject(response);
+        if (responseObject.has("status") && responseObject.getString("status").equals("404")) {
+            return anexosTransacao;
+        }
+
+        JSONArray responseArray = new JSONArray(response);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
         for(int i = 0; i < responseArray.length(); i++) {
