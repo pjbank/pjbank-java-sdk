@@ -452,7 +452,7 @@ public class ContaDigitalManagerTest {
         arquivo.deleteOnExit();
         FileUtils.copyURLToFile(url, arquivo);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         Assert.assertTrue(contaDigitalManager.attachFileToTransaction("1000000001259", arquivo, TipoAnexo.NOTAFISCAL));
     }
@@ -462,7 +462,7 @@ public class ContaDigitalManagerTest {
         File arquivo = File.createTempFile( "arquivo", ".txt");
         arquivo.deleteOnExit();
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         Assert.assertTrue(contaDigitalManager.attachFileToTransaction("1000000001259", arquivo, TipoAnexo.NOTAFISCAL));
     }
