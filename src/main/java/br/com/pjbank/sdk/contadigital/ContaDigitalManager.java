@@ -10,18 +10,25 @@ import br.com.pjbank.sdk.enums.TipoTransacao;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.*;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -567,5 +574,43 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         }
 
         return anexosTransacao;
+    }
+
+    /**
+     * Retorna a lista de anexos de uma transação com ou sem filtro de tipo
+     * @param idTransacao: Código da transação à ser consultada
+     * @param arquivo: Arquivo à ser anexado (imagem [JPEG/PNG] ou documento [PDF])
+     * @param tipoAnexo: Tipo de anexo à ser enviado
+     * @return boolean
+     */
+    public boolean attachFileToTransaction(String idTransacao, File arquivo, TipoAnexo tipoAnexo) throws IOException,
+            PJBankException {
+        Set<String> extensoesPermitidas = new HashSet<>();
+        extensoesPermitidas.add("pdf");
+        extensoesPermitidas.add("jpg");
+        extensoesPermitidas.add("jpeg");
+        extensoesPermitidas.add("png");
+
+        if (!extensoesPermitidas.contains(FilenameUtils.getExtension(arquivo.getName()))) {
+            throw new IllegalArgumentException("O arquivo a ser anexado em uma transação deve estar no formato PDF, JPG," +
+                    " JPEG ou PNG, sendo assim um documento ou uma imagem.");
+        }
+
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes/").concat(idTransacao).concat("/documentos"));
+        HttpPost httpPost = client.getHttpPostClient();
+        httpPost.addHeader("x-chave-conta", this.chave);
+
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+        //FileBody fileBody = new FileBody(arquivo);
+        StringBody stringBody = new StringBody(tipoAnexo.getName(), ContentType.TEXT_PLAIN);
+        //builder.addPart("arquivos", fileBody);
+        builder.addBinaryBody("arquivos", arquivo,
+                ContentType.APPLICATION_OCTET_STREAM, arquivo.getName());
+        builder.addPart("tipo", stringBody);
+
+        httpPost.setEntity(builder.build());
+
+        return client.doRequest(httpPost).getStatusLine().getStatusCode() == 201;
     }
 }
