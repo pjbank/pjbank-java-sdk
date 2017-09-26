@@ -7,14 +7,14 @@ import br.com.pjbank.sdk.enums.TipoConta;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.*;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -441,5 +441,29 @@ public class ContaDigitalManagerTest {
             Assert.assertThat(String.valueOf(anexoTransacao.getTamanho()), not(is(emptyOrNullString())));
             Assert.assertThat(anexoTransacao.getData(), not(is(nullValue())));
         }
+    }
+
+    @Test
+    @Ignore
+    // TODO: Entrar em contato com a equipe responsável pela API para verificar se está sendo recebido lá e qual o real erro que está sendo retornado
+    public void attachFileToTransaction() throws IOException, PJBankException {
+        URL url = new URL("https://pjbank.com.br/contrato/contrato.pdf");
+        File arquivo = File.createTempFile( "arquivo", ".pdf");
+        arquivo.deleteOnExit();
+        FileUtils.copyURLToFile(url, arquivo);
+
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
+
+        Assert.assertTrue(contaDigitalManager.attachFileToTransaction("1000000001259", arquivo, TipoAnexo.NOTAFISCAL));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void attachFileToTransactionComExtensaoNaoPermitida() throws IOException, PJBankException {
+        File arquivo = File.createTempFile( "arquivo", ".txt");
+        arquivo.deleteOnExit();
+
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
+
+        Assert.assertTrue(contaDigitalManager.attachFileToTransaction("1000000001259", arquivo, TipoAnexo.NOTAFISCAL));
     }
 }
