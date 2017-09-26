@@ -1,5 +1,6 @@
 package br.com.pjbank.sdk.contadigital;
 
+import br.com.pjbank.sdk.api.PJBankConfigTest;
 import br.com.pjbank.sdk.enums.FormatoExtrato;
 import br.com.pjbank.sdk.enums.TipoAnexo;
 import br.com.pjbank.sdk.enums.TipoConta;
@@ -7,7 +8,6 @@ import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Boleto;
 import br.com.pjbank.sdk.models.contadigital.*;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -20,10 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -36,8 +33,8 @@ public class ContaDigitalManagerTest {
 
     @Before
     public void init() {
-        this.credencial = "eb2af021c5e2448c343965a7a80d7d090eb64164";
-        this.chave = "a834d47e283dd12f50a1b3a771603ae9dfd5a32c";
+        this.credencial = PJBankConfigTest.credencialContaDigital;
+        this.chave = PJBankConfigTest.chaveContaDigital;
     }
 
     @Test
@@ -97,7 +94,7 @@ public class ContaDigitalManagerTest {
 
         despesas.add(despesa);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponsePagamento responsePagamento = contaDigitalManager.expenseBarcodePayment(despesas).get(0);
 
@@ -113,7 +110,7 @@ public class ContaDigitalManagerTest {
         despesa.setValor(1.50);
         despesa.setCodigoBarras("03399699255870000105853613001014281190000005075");
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponsePagamento responsePagamento = contaDigitalManager.expenseBarcodePayment(despesa);
 
@@ -140,7 +137,7 @@ public class ContaDigitalManagerTest {
         despesa.setCodigoBarras("03399699255870000105853613001014281190000005076");
         despesas.add(despesa);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponsePagamento responsePagamento = contaDigitalManager.expenseBarcodePayment(despesas).get(0);
 
@@ -169,7 +166,7 @@ public class ContaDigitalManagerTest {
 
         transferencias.add(transacaoTransferencia);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.docTedTransfer(transferencias).get(0);
 
@@ -194,7 +191,7 @@ public class ContaDigitalManagerTest {
         transacaoTransferencia.setSolicitante("Teste DOC/TED");
         transacaoTransferencia.setTipoContaFavorecido(TipoConta.CORRENTE);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.docTedTransfer(transacaoTransferencia);
 
@@ -239,7 +236,7 @@ public class ContaDigitalManagerTest {
 
         transferencias.add(transacaoTransferencia);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.docTedTransfer(transferencias).get(0);
 
@@ -264,7 +261,7 @@ public class ContaDigitalManagerTest {
         transacaoTransferencia.setSolicitante("Teste DOC/TED");
         transacaoTransferencia.setTipoContaFavorecido(TipoConta.CORRENTE);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.docTedTransfer(transacaoTransferencia);
 
@@ -307,7 +304,7 @@ public class ContaDigitalManagerTest {
 
         transferencias.add(transacaoTransferencia);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.docTedTransfer(transferencias).get(0);
 
@@ -322,7 +319,7 @@ public class ContaDigitalManagerTest {
 
     @Test
     public void get() throws IOException, JSONException, ParseException, URISyntaxException, PJBankException {
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -348,7 +345,7 @@ public class ContaDigitalManagerTest {
         transacaoTransferenciaInterna.setDataVencimento(new Date());
         transacaoTransferenciaInterna.setContaDestino("b2240b16b373446935a2a7ab437577a823f22eaa");
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.accountToSubaccountTransfer(transacaoTransferenciaInterna);
         Assert.assertThat(responseTransferencia.getIdOperacao(), not(is(emptyOrNullString())));
@@ -367,7 +364,7 @@ public class ContaDigitalManagerTest {
 
         transacoesTransferenciasContaSubconta.add(transacaoTransferenciaInterna);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.accountToSubaccountTransfer(transacoesTransferenciasContaSubconta).get(0);
         Assert.assertThat(responseTransferencia.getIdOperacao(), not(is(emptyOrNullString())));
@@ -393,7 +390,7 @@ public class ContaDigitalManagerTest {
 
         transacoesTransferenciasContaSubconta.add(transacaoTransferenciaInterna);
 
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         ResponseTransferencia responseTransferencia = contaDigitalManager.accountToSubaccountTransfer(transacoesTransferenciasContaSubconta).get(0);
         Assert.assertThat(responseTransferencia.getIdOperacao(), not(is(emptyOrNullString())));
@@ -411,7 +408,7 @@ public class ContaDigitalManagerTest {
 
     @Test
     public void getTransactionFilesSemTipoEspecificado() throws IOException, JSONException, URISyntaxException, ParseException, PJBankException {
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         List<AnexoTransacao> anexosTransacao = contaDigitalManager.getTransactionFiles("1000000001259", null);
 
@@ -429,7 +426,7 @@ public class ContaDigitalManagerTest {
 
     @Test
     public void getTransactionFilesComTipoEspecificado() throws IOException, JSONException, URISyntaxException, ParseException, PJBankException {
-        ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+        ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
         List<AnexoTransacao> anexosTransacao = contaDigitalManager.getTransactionFiles("1000000001259", TipoAnexo.NOTAFISCAL);
 

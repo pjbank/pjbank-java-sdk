@@ -1,14 +1,13 @@
 package br.com.pjbank.sdk.contadigital;
 
-import br.com.pjbank.sdk.enums.FormaRecebimento;
+import br.com.pjbank.sdk.api.PJBankConfigTest;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Cliente;
 import br.com.pjbank.sdk.models.common.Credencial;
 import br.com.pjbank.sdk.models.common.Endereco;
-import br.com.pjbank.sdk.models.recebimento.CredencialRecebimento;
-import br.com.pjbank.sdk.contadigital.Credenciamento;
 import org.json.JSONException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -22,6 +21,15 @@ import static org.hamcrest.Matchers.*;
  * @since 1.0
  */
 public class CredenciamentoTest {
+    private String credencial;
+    private String chave;
+
+    @Before
+    public void init() {
+        this.credencial = PJBankConfigTest.credencialContaDigital;
+        this.chave = PJBankConfigTest.chaveContaDigital;
+    }
+
     @Test
     @Ignore
     public void create() throws IOException, JSONException, PJBankException {
@@ -56,7 +64,7 @@ public class CredenciamentoTest {
     public void get() throws IOException, JSONException, PJBankException {
         Credenciamento credenciamento = new Credenciamento();
 
-        Cliente cliente = credenciamento.get(new Credencial("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c"));
+        Cliente cliente = credenciamento.get(new Credencial(this.credencial, this.chave));
 
         Assert.assertThat(cliente.getNome(), not(is(emptyOrNullString())));
         Assert.assertThat(cliente.getCpfCnpj(), not(is(emptyOrNullString())));
