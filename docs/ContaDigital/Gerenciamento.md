@@ -14,7 +14,7 @@ import br.com.pjbank.sdk.contadigital.ContaDigitalManager;
 public class ContaDigitalService {
     /**
     * Adiciona saldo na conta digital
-    * @return boolean
+    * @return Boleto
     */
     public boolean adicionarSaldo(double valor) {
         
@@ -143,3 +143,38 @@ Como exceção, pode-se retornar as seguintes:
 - PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
 
 Documentação: https://docs.pjbank.com.br/#94538b54-b96a-a652-e5d6-7b5c50352090
+
+### Cadastrar ou alterar uma URL de Webhook
+
+Enviaremos um Webhook para o seu sistema sempre que algo acontecer na sua Conta digital. Para cadastrar ou alterar a URL que receberá este aviso (Webhook) da Conta Digital PJBank basta instanciar a classe `br.com.pjbank.sdk.contadigital.ContaDigitalManager` e utilizar o método `manageWebhookURL` enviando, por parâmetro, a URL que deverá ser utilizada para o Webhook da Conta Digital como no exemplo abaixo:
+
+```java
+package br.com.viniciusls.app.services;
+
+import br.com.pjbank.sdk.contadigital.ContaDigitalManager;
+
+public class ContaDigitalService {
+    /**
+    * Cadastra ou altera a URL para Webhook na Conta Digital
+    * @return boolean
+    */
+    public boolean alterarURLWebhook(String url) {
+        
+        try {
+            ContaDigitalManager contaDigitalManager = new ContaDigitalManager("eb2af021c5e2448c343965a7a80d7d090eb64164", "a834d47e283dd12f50a1b3a771603ae9dfd5a32c");
+            
+            contaDigitalManager.manageWebhookURL("https://www.meusistema.com.br/webhookPJBank.php");
+        } catch (PJBankException e) {
+            // catch block
+        }
+    }
+
+}
+```
+Assim, será retornado uma resposta verdadeira caso a operação tenha sucesso.
+
+Como exceção, pode-se retornar as seguintes:
+
+- PJBankException: Caso a API retorne erro ao atender a solicitação (ex: dados incorretos, erro interno, etc);
+
+Documentação: https://docs.pjbank.com.br/#ccec2de7-dd64-8ed0-be5c-5f0959e952a8
