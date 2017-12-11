@@ -427,12 +427,9 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
         JSONArray transferenciasArray = new JSONArray();
 
         JSONObject transferenciaObject = new JSONObject();
-        transferenciaObject.put("data_vencimento", dateFormat.format(transacaoTransferenciasContaSubconta.getDataVencimento()));
+        transferenciaObject.put("data_pagamento", dateFormat.format(transacaoTransferenciasContaSubconta.getDataVencimento()));
         transferenciaObject.put("valor", transacaoTransferenciasContaSubconta.getValor());
-        transferenciaObject.put("conta_destino", transacaoTransferenciasContaSubconta.getContaDestino());
-
-        if (StringUtils.isNotBlank(transacaoTransferenciasContaSubconta.getContaOrigem()))
-            transferenciaObject.put("conta_origem", transacaoTransferenciasContaSubconta.getContaOrigem());
+        transferenciaObject.put("subconta_destino", transacaoTransferenciasContaSubconta.getContaDestino());
 
         transferenciasArray.put(transferenciaObject);
 
@@ -471,12 +468,9 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         for (TransacaoTransferenciaInterna transacaoTransferenciaInterna : transacoesTransferenciasContaSubconta) {
             JSONObject transferenciaObject = new JSONObject();
-            transferenciaObject.put("data_vencimento", dateFormat.format(transacaoTransferenciaInterna.getDataVencimento()));
+            transferenciaObject.put("data_pagamento", dateFormat.format(transacaoTransferenciaInterna.getDataVencimento()));
             transferenciaObject.put("valor", transacaoTransferenciaInterna.getValor());
-            transferenciaObject.put("conta_destino", transacaoTransferenciaInterna.getContaDestino());
-
-            if (StringUtils.isNotBlank(transacaoTransferenciaInterna.getContaOrigem()))
-                transferenciaObject.put("conta_origem", transacaoTransferenciaInterna.getContaOrigem());
+            transferenciaObject.put("subconta_destino", transacaoTransferenciaInterna.getContaDestino());
 
             transferenciasArray.put(transferenciaObject);
         }
