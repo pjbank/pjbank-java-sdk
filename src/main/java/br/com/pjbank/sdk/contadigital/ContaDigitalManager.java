@@ -545,26 +545,29 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
 
         List<AnexoTransacao> anexosTransacao = new ArrayList<>();
 
-        JSONObject responseObject = new JSONObject(response);
-        if (responseObject.has("status") && responseObject.getString("status").equals("404")) {
-            return anexosTransacao;
-        }
+        if(response.trim().charAt(0) == '{') {
+            JSONObject responseObject = new JSONObject(response);
+            if (responseObject.has("status") && responseObject.getString("status").equals("404")) {
+                return anexosTransacao;
+            }
+        } else {
 
-        JSONArray responseArray = new JSONArray(response);
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            JSONArray responseArray = new JSONArray(response);
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        for(int i = 0; i < responseArray.length(); i++) {
-            JSONObject object = (JSONObject) responseArray.get(i);
+            for (int i = 0; i < responseArray.length(); i++) {
+                JSONObject object = (JSONObject) responseArray.get(i);
 
-            AnexoTransacao anexoTransacao = new AnexoTransacao();
-            anexoTransacao.setUrl(object.getString("imagem"));
-            anexoTransacao.setTipo(TipoAnexo.fromString(object.getString("tipo")));
-            anexoTransacao.setNome(object.getString("nome"));
-            anexoTransacao.setFormato(FormatoArquivo.fromString(object.getString("formato")));
-            anexoTransacao.setTamanho(object.getLong("tamanho"));
-            anexoTransacao.setData(dateFormat.parse(object.getString("data")));
+                AnexoTransacao anexoTransacao = new AnexoTransacao();
+                anexoTransacao.setUrl(object.getString("imagem"));
+                anexoTransacao.setTipo(TipoAnexo.fromString(object.getString("tipo")));
+                anexoTransacao.setNome(object.getString("nome"));
+                anexoTransacao.setFormato(FormatoArquivo.fromString(object.getString("formato")));
+                anexoTransacao.setTamanho(object.getLong("tamanho"));
+                anexoTransacao.setData(dateFormat.parse(object.getString("data")));
 
-            anexosTransacao.add(anexoTransacao);
+                anexosTransacao.add(anexoTransacao);
+            }
         }
 
         return anexosTransacao;

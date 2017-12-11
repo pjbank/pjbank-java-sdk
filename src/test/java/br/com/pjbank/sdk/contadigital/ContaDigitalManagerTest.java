@@ -410,7 +410,7 @@ public class ContaDigitalManagerTest {
     public void getTransactionFilesSemTipoEspecificado() throws IOException, JSONException, URISyntaxException, ParseException, PJBankException {
         ContaDigitalManager contaDigitalManager = new ContaDigitalManager(this.credencial, this.chave);
 
-        List<AnexoTransacao> anexosTransacao = contaDigitalManager.getTransactionFiles("1000000001259", null);
+        List<AnexoTransacao> anexosTransacao = contaDigitalManager.getTransactionFiles("1259", null);
 
         // O teste só será executado caso haja algum anexo na transação, do contrário não há como testar
         if (anexosTransacao.size() > 0) {
