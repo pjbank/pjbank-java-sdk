@@ -1,18 +1,9 @@
 package br.com.pjbank.sdk.recebimento;
 
-import br.com.pjbank.sdk.api.PJBankConfigTest;
-import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
-import br.com.pjbank.sdk.exceptions.PJBankException;
-import br.com.pjbank.sdk.models.common.Cliente;
-import br.com.pjbank.sdk.models.common.Endereco;
-import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
-import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
-
-import org.apache.http.ParseException;
-import org.json.JSONException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,7 +14,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import org.apache.http.ParseException;
+import org.json.JSONException;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import br.com.pjbank.sdk.api.PJBankConfigTest;
+import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
+import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.common.Cliente;
+import br.com.pjbank.sdk.models.common.Endereco;
+import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
+import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -136,4 +139,5 @@ public class BoletosManagerTest {
 		}
     		
     }
+    
 }
