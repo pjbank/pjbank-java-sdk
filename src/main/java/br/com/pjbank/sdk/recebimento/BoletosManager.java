@@ -1,11 +1,14 @@
 package br.com.pjbank.sdk.recebimento;
 
-import br.com.pjbank.sdk.api.PJBankClient;
-import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
-import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
-import br.com.pjbank.sdk.exceptions.PJBankException;
-import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
-import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpGet;
@@ -17,15 +20,12 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import br.com.pjbank.sdk.api.PJBankClient;
+import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
+import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
+import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
+import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -87,7 +87,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
 
         return boletoRecebimento;
     }
-
+    
     /**
      * Retorna a lista de boletos emitidos por códigos de pedidos
      * @param pedidos: Lista de códigos de pedidos os quais deseja retornar os boletos
