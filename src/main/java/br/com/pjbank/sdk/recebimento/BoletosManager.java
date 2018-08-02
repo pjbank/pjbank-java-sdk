@@ -126,9 +126,9 @@ public class BoletosManager extends PJBankAuthenticatedService {
             JSONObject itemExtrato = extratoObject.getJSONObject(i);
             ExtratoBoleto extrato = new ExtratoBoleto(
                     itemExtrato.getDouble("valor"),
-                    itemExtrato.getDouble("valor_pago"),
+                    itemExtrato.optDouble("valor_pago", 0.0),
                     itemExtrato.getDouble("valor_liquido"),
-                    itemExtrato.getDouble("valor_tarifa"),
+                    itemExtrato.optDouble("valor_tarifa", 0.0),
                     itemExtrato.getString("nosso_numero"),
                     itemExtrato.getString("nosso_numero_original"),
                     itemExtrato.getString("banco_numero"),
