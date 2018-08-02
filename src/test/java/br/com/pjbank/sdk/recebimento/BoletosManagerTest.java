@@ -122,22 +122,22 @@ public class BoletosManagerTest {
 
         boletosManager.getByIds(pedidos);
     }
-    
+
     @Test
     public void get() throws IOException, JSONException, PJBankException, ParseException, URISyntaxException, java.text.ParseException {
-    		BoletosManager manager = new BoletosManager(this.credencial, this.chave);
-    		LocalDate inicio = LocalDate.of(2001, 1, 29);
-    		LocalDate fim = LocalDate.now();
-    		List<ExtratoBoleto>extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.ABERTO);
-    		for(ExtratoBoleto extrato: extratos) {
-			Assert.assertThat(extrato.getDataPagamento(), nullValue(Date.class));
-		}
-    		
-    		extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.PAGO);
-    		for(ExtratoBoleto extrato: extratos) {
-			Assert.assertThat(extrato.getDataPagamento(), not(nullValue(Date.class)));
-		}
-    		
+        BoletosManager manager = new BoletosManager(this.credencial, this.chave);
+        LocalDate inicio = LocalDate.of(2001, 1, 29);
+        LocalDate fim = LocalDate.now();
+        List<ExtratoBoleto> extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.ABERTO);
+        for (ExtratoBoleto extrato : extratos) {
+            Assert.assertThat(extrato.getDataPagamento(), nullValue(Date.class));
+        }
+
+        extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.PAGO);
+        for (ExtratoBoleto extrato : extratos) {
+            Assert.assertThat(extrato.getDataPagamento(), not(nullValue(Date.class)));
+        }
+
     }
     
 }

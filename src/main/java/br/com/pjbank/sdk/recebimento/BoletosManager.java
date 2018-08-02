@@ -110,44 +110,47 @@ public class BoletosManager extends PJBankAuthenticatedService {
 
         return responseObject.getString("linkBoleto");
     }
-    
-    public List<ExtratoBoleto>get(Date inicio, Date fim, StatusPagamentoBoleto pago) throws URISyntaxException, IOException, PJBankException, java.text.ParseException{
-		PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
-		HttpGet httpGet= client.getHttpGetClient();
-		httpGet.addHeader("x-chave", this.getChave());
+
+    public List<ExtratoBoleto> get(Date inicio, Date fim, StatusPagamentoBoleto pago) throws URISyntaxException, IOException, PJBankException, java.text.ParseException {
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
+        HttpGet httpGet = client.getHttpGetClient();
+        httpGet.addHeader("x-chave", this.getChave());
         this.adicionarFiltros(httpGet, inicio, fim, pago);
-        
+
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
         JSONArray extratoObject = new JSONArray(response);
         int totalItensExtrato = extratoObject.length();
         List<ExtratoBoleto> extratos = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         for (int i = 0; i < totalItensExtrato; i++) {
-        		JSONObject itemExtrato = extratoObject.getJSONObject(i);
-        		ExtratoBoleto extrato = new ExtratoBoleto(
-        				itemExtrato.getDouble("valor"), 
-        				itemExtrato.getString("nosso_numero"), 
-        				itemExtrato.getString("nosso_numero_original"), 
-        				itemExtrato.getString("banco_numero"), 
-        				itemExtrato.getString("token_facilitador"), 
-        				itemExtrato.getDouble("valor_liquido"));
-        		
-        		String dataVencimento = itemExtrato.getString("data_vencimento");
+            JSONObject itemExtrato = extratoObject.getJSONObject(i);
+            ExtratoBoleto extrato = new ExtratoBoleto(
+                    itemExtrato.getDouble("valor"),
+                    itemExtrato.optDouble("valor_pago", 0.0),
+                    itemExtrato.getDouble("valor_liquido"),
+                    itemExtrato.optDouble("valor_tarifa", 0.0),
+                    itemExtrato.getString("nosso_numero"),
+                    itemExtrato.getString("nosso_numero_original"),
+                    itemExtrato.getString("banco_numero"),
+                    itemExtrato.getString("token_facilitador")
+            );
+
+            String dataVencimento = itemExtrato.getString("data_vencimento");
             if (!StringUtils.isBlank(dataVencimento))
-            		extrato.setDataVencimento(dateFormat.parse(dataVencimento));
-            
+                extrato.setDataVencimento(dateFormat.parse(dataVencimento));
+
             String dataPagamento = itemExtrato.getString("data_pagamento");
             if (!StringUtils.isBlank(dataPagamento))
-            		extrato.setDataPagamento(dateFormat.parse(dataPagamento));
-            
+                extrato.setDataPagamento(dateFormat.parse(dataPagamento));
+
             String dataCredito = itemExtrato.getString("data_credito");
             if (!StringUtils.isBlank(dataCredito))
-            		extrato.setDataCredito(dateFormat.parse(dataCredito));
-            
+                extrato.setDataCredito(dateFormat.parse(dataCredito));
+
             extratos.add(extrato);
         }
-		return extratos;
-	}
+        return extratos;
+    }
 	
 	private void adicionarFiltros(HttpRequestBase httpRequestClient, Date inicio, Date fim, StatusPagamentoBoleto pago)
             throws URISyntaxException {
