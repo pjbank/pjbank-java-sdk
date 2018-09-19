@@ -38,6 +38,7 @@ public class PJBankClient {
         HttpGet client = new HttpGet(this.absolutePath);
         client.addHeader("Accept", PJBankConfig.accept);
         client.addHeader("Content-Type", PJBankConfig.contentType);
+        client.addHeader("Source", PJBankConfig.source);
 
         return client;
     }
@@ -50,6 +51,7 @@ public class PJBankClient {
         HttpPost client = new HttpPost(this.absolutePath);
         client.addHeader("Accept", PJBankConfig.accept);
         client.addHeader("Content-Type", PJBankConfig.contentType);
+        client.addHeader("Source", PJBankConfig.source);
 
         return client;
     }
@@ -62,6 +64,7 @@ public class PJBankClient {
         HttpPut client = new HttpPut(this.absolutePath);
         client.addHeader("Accept", PJBankConfig.accept);
         client.addHeader("Content-Type", PJBankConfig.contentType);
+        client.addHeader("Source", PJBankConfig.source);
 
         return client;
     }
@@ -74,6 +77,7 @@ public class PJBankClient {
         HttpDelete client = new HttpDelete(this.absolutePath);
         client.addHeader("Accept", PJBankConfig.accept);
         client.addHeader("Content-Type", PJBankConfig.contentType);
+        client.addHeader("Source", PJBankConfig.source);
 
         return client;
     }

@@ -34,6 +34,11 @@ public class PJBankConfig {
     public final static String contentType = "application/json";
 
     /**
+     * Source padrão para identificar no monitoramento que a requisição partiu por meio da SDK
+     */
+    public final static String source = "java-sdk";
+
+    /**
      * Retorna a URL da API baseada no valor da variável de JVM "pjbank-env". Caso não haja valor definido, será usado o
      * ambiente dev/sandbox por padrão.
      * @return String
