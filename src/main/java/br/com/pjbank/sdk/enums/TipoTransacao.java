@@ -6,7 +6,7 @@ package br.com.pjbank.sdk.enums;
  * @since 1.0
  */
 public enum TipoTransacao {
-    CREDITO("Crédito"), PAGAMENTO("Pagamento"), TRANSFERENCIA("Transferência");
+    CREDITO("crédito"), DEPOSITO("depósito"), PAGAMENTO("pagamento"), TRANSFERENCIA("transferência"), TRANSFERENCIA_CONTA_DIGITAL("transferencia_conta_digital");
 
     private String name;
 
