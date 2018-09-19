@@ -405,7 +405,7 @@ public class ContaDigitalManager extends PJBankAuthenticatedService {
             transacaoExtrato.setDataPagamento(dateFormat.parse(responseObject.getString("data_pagamento")));
             transacaoExtrato.setValor(responseObject.getDouble("valor"));
             transacaoExtrato.setHistorico(responseObject.getString("historico"));
-            transacaoExtrato.setTipo(TipoTransacao.fromString(responseObject.getString("tipo_transacao")));
+            transacaoExtrato.setTipo(TipoTransacao.fromString(responseObject.getString("tipo_transacao").toLowerCase()));
 
             transacoesExtrato.add(transacaoExtrato);
         }
