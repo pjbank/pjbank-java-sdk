@@ -6,10 +6,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.*;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -28,6 +35,8 @@ public class PJBankClient {
             throw new IllegalArgumentException("Endpoint não informado");
 
         this.absolutePath = PJBankConfig.getApiBaseUrl().concat(endPoint);
+
+        System.setProperty("jsse.enableSNIExtension", "true");
     }
 
     /**
@@ -86,8 +95,25 @@ public class PJBankClient {
      * Retorna uma instância do HttpClient
      * @return HttpClient
      */
-    public HttpClient getHttpClient() {
-        return HttpClientBuilder.create().build();
+    private HttpClient getHttpClient() {
+        try {
+            SSLContext sslContext = SSLContexts.custom()
+                    .build();
+
+            SSLConnectionSocketFactory f = new SSLConnectionSocketFactory(
+                    sslContext,
+                    new String[]{"TLSv1.2"},
+                    null,
+                    new DefaultHostnameVerifier());
+
+            return HttpClients.custom()
+                    .setSSLSocketFactory(f)
+                    .build();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+
+            return HttpClientBuilder.create().build();
+        }
     }
 
     /**
