@@ -14,7 +14,7 @@ public class PJBankExceptionHandler {
      * @return PJBankException: Exceção contendo o status e a mensagem formatada retornada pela API
      */
     public static PJBankException handleFromJSONResponse(String response){
-        JSONObject responseObject = new JSONObject(response);
+        JSONObject responseObject = new JSONObject(response.replace("\n", ""));
         return new PJBankException(responseObject.has("status") ? responseObject.getInt("status") : 500,
                                     responseObject.has("msg") ? responseObject.getString("msg") :
                                     responseObject.has("message") ? responseObject.getString("message") : "undefined");
