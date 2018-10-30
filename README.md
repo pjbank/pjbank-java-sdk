@@ -5,6 +5,10 @@ PJBank SDK para Java! :coffee: :coffee: :coffee:
 
 ![Construcao](https://openclipart.org/image/2400px/svg_to_png/231626/underconstruction.png)
 
+# Atenção
+
+Este SDK encontra-se em **desenvolvimento** pela comunidade **open source** e **não** possui garantias de funcionamento adequado. Utilize-o somente se estiver plenamente ciente desta condição. Caso encontre algum erro, você pode abrir uma *issue* ou desenvolver a correção e abrir um *pull request*. Agradecemos sua colaboração!
+
 # Instalação e configuração
 
 ## Download
