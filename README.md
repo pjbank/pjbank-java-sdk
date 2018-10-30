@@ -29,7 +29,7 @@ Vale lembrar que, para habilitar a utilização da API via Sandbox, deve-se poss
 
 ## Testes
 
-Atualmente esta SDK conta com testes de integração com a API utilizando JUnit. Em breve serão adicionados demais tipos de testes cabíveis.
+Atualmente esta SDK conta com testes de integração com a API utilizando JUnit. Em breve serão adicionados demais tipos de testes cabíveis.Mas
 
 ### Integração
 
