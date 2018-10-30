@@ -18,6 +18,7 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.pjbank.sdk.api.PJBankConfigTest;
@@ -44,6 +45,7 @@ public class BoletosManagerTest {
     }
 
     @Test
+    @Ignore
     public void create() throws IOException, JSONException, PJBankException {
         Cliente cliente = new Cliente();
         cliente.setNome("Cliente de Exemplo");
