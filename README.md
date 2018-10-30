@@ -27,6 +27,15 @@ Por padrão, caso nenhuma variável seja definida, o SDK executará suas ações
 
 Vale lembrar que, para habilitar a utilização da API via Sandbox, deve-se possuir um par de credencial/chave ativos no ambiente Sandbox. Para obtê-lo, deve-se contatar o Suporte do PJBank (suporte@pjbank.com.br) solicitando seu credenciamento para receber tal conjunto de credenciais. Tendo-o em mãos, fique à vontade para testar a API como quiser.
 
+## Testes
+
+Atualmente esta SDK conta com testes de integração com a API utilizando JUnit. Em breve serão adicionados demais tipos de testes cabíveis.Mas
+
+### Integração
+
+Junto com o desenvolvimento de cada funcionalidade do projeto, são criados testes de integração utilizando JUnit. Estes testes estão localizados em `src/test` e tratam várias condições em integração com a API. Para executar a suíte completa de testes basta rodar `mvn test -B`.
+Caso queira contribuir com o desenvolvimento da SDK, pedimos que sempre que possível inclua pelo menos alguns testes sobre cada funcionalidade que desenvolver.
+
 # Documentacão e Exemplos
 
 Para mais informações consulte a [documentação da nossa API](https://docs.pjbank.com.br)

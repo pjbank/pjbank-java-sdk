@@ -129,7 +129,7 @@ public class PJBankClient {
         HttpResponse response = client.execute(httpRequestClient);
 
         if (response.getStatusLine().getStatusCode() >= 400)
-            throw PJBankExceptionHandler.handleFromJSONResponse(EntityUtils.toString(response.getEntity()));
+            throw PJBankExceptionHandler.handleFromJSONResponse(EntityUtils.toString(response.getEntity()), response.getStatusLine().getStatusCode());
 
         return response;
     }
