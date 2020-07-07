@@ -111,11 +111,11 @@ public class BoletosManager extends PJBankAuthenticatedService {
         return responseObject.getString("linkBoleto");
     }
 
-    public List<ExtratoBoleto> get(Date inicio, Date fim, StatusPagamentoBoleto pago) throws URISyntaxException, IOException, PJBankException, java.text.ParseException {
+    public List<ExtratoBoleto> get(Date inicio, Date fim, StatusPagamentoBoleto pago, Integer pagina) throws URISyntaxException, IOException, PJBankException, java.text.ParseException {
         PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes"));
         HttpGet httpGet = client.getHttpGetClient();
         httpGet.addHeader("x-chave", this.getChave());
-        this.adicionarFiltros(httpGet, inicio, fim, pago);
+        this.adicionarFiltros(httpGet, inicio, fim, pago, pagina);
 
         String response = EntityUtils.toString(client.doRequest(httpGet).getEntity());
         JSONArray extratoObject = new JSONArray(response);
@@ -152,7 +152,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
         return extratos;
     }
 	
-	private void adicionarFiltros(HttpRequestBase httpRequestClient, Date inicio, Date fim, StatusPagamentoBoleto pago)
+	private void adicionarFiltros(HttpRequestBase httpRequestClient, Date inicio, Date fim, StatusPagamentoBoleto pago, Integer pagina)
             throws URISyntaxException {
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         URIBuilder uriBuilder = new URIBuilder(httpRequestClient.getURI());
@@ -160,6 +160,7 @@ public class BoletosManager extends PJBankAuthenticatedService {
         uriBuilder.addParameter("data_inicio", formatter.format(inicio));
         uriBuilder.addParameter("data_fim", formatter.format(fim));
         uriBuilder.addParameter("pago", pago.getName());
+        uriBuilder.addParameter("pagina", pagina.toString());
 
         httpRequestClient.setURI(uriBuilder.build());
     }
