@@ -130,12 +130,12 @@ public class BoletosManagerTest {
         BoletosManager manager = new BoletosManager(this.credencial, this.chave);
         LocalDate inicio = LocalDate.of(2001, 1, 29);
         LocalDate fim = LocalDate.now();
-        List<ExtratoBoleto> extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.ABERTO);
+        List<ExtratoBoleto> extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.ABERTO, 1);
         for (ExtratoBoleto extrato : extratos) {
             Assert.assertThat(extrato.getDataPagamento(), nullValue(Date.class));
         }
 
-        extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.PAGO);
+        extratos = manager.get(Date.from(inicio.atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(fim.atStartOfDay(ZoneId.systemDefault()).toInstant()), StatusPagamentoBoleto.PAGO, 1);
         for (ExtratoBoleto extrato : extratos) {
             Assert.assertThat(extrato.getDataPagamento(), not(nullValue(Date.class)));
         }
