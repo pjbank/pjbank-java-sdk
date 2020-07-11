@@ -1,5 +1,6 @@
 package br.com.pjbank.sdk.recebimento;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -26,8 +27,10 @@ import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
 import br.com.pjbank.sdk.exceptions.PJBankException;
 import br.com.pjbank.sdk.models.common.Cliente;
 import br.com.pjbank.sdk.models.common.Endereco;
+import br.com.pjbank.sdk.models.recebimento.BoletoInvalido;
 import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
 import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
+import org.apache.http.HttpStatus;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -142,4 +145,12 @@ public class BoletosManagerTest {
 
     }
     
+    @Test
+    public void invalidate() throws IOException, PJBankException{
+        BoletosManager manager = new BoletosManager(this.credencial, this.chave);
+        final BoletoInvalido boletoInvalido = manager.invalidate(89724);
+        
+        Assert.assertThat(boletoInvalido.getStatus(), is(HttpStatus.SC_OK));
+        Assert.assertThat(boletoInvalido.getMessage(), containsString("invalidada com sucesso"));
+    }
 }

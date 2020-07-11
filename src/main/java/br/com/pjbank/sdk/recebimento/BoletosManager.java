@@ -24,8 +24,10 @@ import br.com.pjbank.sdk.api.PJBankClient;
 import br.com.pjbank.sdk.auth.PJBankAuthenticatedService;
 import br.com.pjbank.sdk.enums.StatusPagamentoBoleto;
 import br.com.pjbank.sdk.exceptions.PJBankException;
+import br.com.pjbank.sdk.models.recebimento.BoletoInvalido;
 import br.com.pjbank.sdk.models.recebimento.BoletoRecebimento;
 import br.com.pjbank.sdk.models.recebimento.ExtratoBoleto;
+import org.apache.http.client.methods.HttpDelete;
 
 /**
  * @author Vinícius Silva <vinicius.silva@superlogica.com>
@@ -163,5 +165,28 @@ public class BoletosManager extends PJBankAuthenticatedService {
         uriBuilder.addParameter("pagina", pagina.toString());
 
         httpRequestClient.setURI(uriBuilder.build());
+    }
+
+    /**
+     * Retorna um objeto BoletoInvalido com o status e mensagem.<br>Exemplo:
+     * <pre>
+     * Status: 200
+     * Mensagem: Cobrança 12345678 invalidada com sucesso.
+     * </pre>
+     *
+     * @param pedidoNumero Integer
+     * @return BoletoInvalido:
+     * @throws IOException
+     * @throws PJBankException
+     */
+    public BoletoInvalido invalidate(Integer pedidoNumero) throws IOException, PJBankException {
+        PJBankClient client = new PJBankClient(this.endPoint.concat("/transacoes/" + pedidoNumero));
+        HttpDelete httpDelete = client.getHttpDeleteClient();
+        httpDelete.addHeader("x-chave", this.getChave());
+
+        String response = EntityUtils.toString(client.doRequest(httpDelete).getEntity());
+        JSONObject responseObject = new JSONObject(response);
+
+        return new BoletoInvalido(responseObject.getInt("status"), responseObject.getString("msg"));
     }
 }
